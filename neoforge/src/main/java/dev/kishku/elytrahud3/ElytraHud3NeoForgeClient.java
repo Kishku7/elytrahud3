@@ -1,7 +1,6 @@
 package dev.kishku.elytrahud3;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -40,9 +39,6 @@ public final class ElytraHud3NeoForgeClient {
                 ElytraHudConfig config = Common.CONFIG;
                 Minecraft client = Common.client;
                 if (config == null || !config.modEnabled || client == null) {
-                    return;
-                }
-                if (client.screen instanceof InventoryScreen) {
                     return;
                 }
                 var player = client.player;

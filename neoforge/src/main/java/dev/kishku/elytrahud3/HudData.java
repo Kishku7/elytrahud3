@@ -69,7 +69,7 @@ public class HudData {
     private static void resolveMethods(Minecraft client) {
         Object cam;
         try {
-            cam = client.gameRenderer.getMainCamera();
+            cam = McCompat.mainCamera(client.gameRenderer);
         } catch (Throwable t) {
             cam = null;
         }
@@ -105,7 +105,7 @@ public class HudData {
         }
         if (cameraRollMethod != null) {
             try {
-                Object cam = client.gameRenderer.getMainCamera();
+                Object cam = McCompat.mainCamera(client.gameRenderer);
                 if (cam != null) {
                     return (Float) cameraRollMethod.invoke(cam);
                 }

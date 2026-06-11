@@ -60,7 +60,7 @@ public class ElytraHudConfigScreen extends Screen {
     public void onClose() {
         ConfigManager.save();
         if (this.minecraft != null) {
-            this.minecraft.setScreen(parent);
+            McCompat.setScreen(this.minecraft, parent);
         }
     }
 }

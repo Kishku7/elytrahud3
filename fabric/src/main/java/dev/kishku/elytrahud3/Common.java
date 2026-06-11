@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.Identifier;
 
 public class Common implements ClientModInitializer {
@@ -38,7 +37,7 @@ public class Common implements ClientModInitializer {
             VanillaHudElements.HOTBAR,
             Identifier.fromNamespaceAndPath(MODID, "hud"),
             (graphics, tickDelta) -> {
-                if (CONFIG == null || !CONFIG.modEnabled || client.screen instanceof InventoryScreen) {
+                if (CONFIG == null || !CONFIG.modEnabled) {
                     return;
                 }
                 var player = client.player;
