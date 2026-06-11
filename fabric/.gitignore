@@ -1,0 +1,16 @@
+.gradle
+build
+bin
+out
+*.log
+.DS_Store
+run
+.fabric
+.mixin.out
+.idea
+*.zip
+*.txt
+.classpath
+.project
+nul
+.settings
