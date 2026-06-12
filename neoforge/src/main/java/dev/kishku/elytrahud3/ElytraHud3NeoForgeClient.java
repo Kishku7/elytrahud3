@@ -15,30 +15,36 @@ public final class ElytraHud3NeoForgeClient {
     private ElytraHud3NeoForgeClient() {}
 
     public static void init(ModContainer mod, IEventBus bus) {
-        Common.client = Minecraft.getInstance();
-        Common.hudRenderer = new HudRenderer(Common.client);
-
-        // HUD layer registration (mod bus)
+        // NOTE: do NOT touch Minecraft.getInstance() here — during @Mod construction it can be null.
         bus.addListener(ElytraHud3NeoForgeClient::registerGuiLayers);
-
-        // Per-tick HUD data update (game bus)
         NeoForge.EVENT_BUS.addListener(ElytraHud3NeoForgeClient::onClientTick);
-
-        // In-game config screen via NeoForge's own mod-list hook (no ModMenu / YACL).
         mod.registerExtensionPoint(IConfigScreenFactory.class,
             (container, parent) -> new ElytraHudConfigScreen(parent));
     }
 
+    /** Resolve the client + renderer lazily; getInstance() is reliably non-null by first tick/frame. */
+    private static void ensureClient() {
+        if (Common.client == null) {
+            Common.client = Minecraft.getInstance();
+        }
+        if (Common.hudRenderer == null && Common.client != null) {
+            Common.hudRenderer = new HudRenderer(Common.client);
+        }
+    }
+
     private static void registerGuiLayers(RegisterGuiLayersEvent event) {
         // Draw just below the hotbar (equivalent to Fabric's attachElementBefore(HOTBAR)).
-        // graphics/delta types are inferred from GuiLayer.render so we stay mapping-agnostic.
         event.registerBelow(
             VanillaGuiLayers.HOTBAR,
             Identifier.fromNamespaceAndPath(Common.MODID, "hud"),
             (graphics, delta) -> {
                 ElytraHudConfig config = Common.CONFIG;
+                if (config == null || !config.modEnabled) {
+                    return;
+                }
+                ensureClient();
                 Minecraft client = Common.client;
-                if (config == null || !config.modEnabled || client == null) {
+                if (client == null || Common.hudRenderer == null) {
                     return;
                 }
                 var player = client.player;
@@ -57,7 +63,11 @@ public final class ElytraHud3NeoForgeClient {
         if (config == null || !config.modEnabled) {
             return;
         }
-        var player = Minecraft.getInstance().player;
+        ensureClient();
+        if (Common.client == null) {
+            return;
+        }
+        var player = Common.client.player;
         if (player == null) {
             return;
         }
