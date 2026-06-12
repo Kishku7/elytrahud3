@@ -1,5 +1,8 @@
 # ElytraHud3
 
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/NVcgJJRsx)
+
+
 Aviation-style flight HUD for Minecraft elytras — **Fabric** and **NeoForge**, Minecraft **26.1.x and 26.2**.
 
 A corner instrument cluster that appears while you're gliding: airspeed, altitude, vertical
