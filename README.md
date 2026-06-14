@@ -1,58 +1,38 @@
 # ElytraHud3
 
-[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/NVcgJJRsx)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/2ZxzbCzAHe)
 
+An aviation-style flight HUD for elytra flight.
 
-Aviation-style flight HUD for Minecraft elytras — **Fabric** and **NeoForge**, Minecraft **26.1.x and 26.2**.
+While you're gliding, ElytraHud3 shows a corner instrument cluster: airspeed, altitude,
+vertical speed, an artificial horizon, a compass, and elytra durability. Units toggle
+between imperial and metric, every gauge is individually toggleable, and the artificial
+horizon is roll-aware (compatible with Do a Barrel Roll). Client-side only.
 
-A corner instrument cluster that appears while you're gliding: airspeed, altitude, vertical
-speed, an artificial horizon, a compass, and elytra durability. Units toggle between imperial
-(default) and metric. The artificial horizon stays correct while banking under
-[Do a Barrel Roll](https://modrinth.com/mod/do-a-barrel-roll).
+## Supported platforms
 
-## Loaders & versions
+Source for each Minecraft version lives on its own branch, named for the version.
+`main` (this branch) is just the overview.
 
-- **Fabric** (`fabric/`) — Minecraft 26.1.x and 26.2. Requires Fabric API. ModMenu optional (config screen).
-- **NeoForge** (`neoforge/`) — Minecraft 26.1.2. No extra dependencies; config screen via the mods list.
+| Branch    | Minecraft       | Fabric | NeoForge |
+| ---       | ---             | :---:  | :---:    |
+| `26.1.2`  | 26.1 - 26.1.2   | Yes    | Yes      |
 
-Pure Java on both loaders — no Kotlin / Fabric Language Kotlin / YACL runtime dependencies. About
-90% of the code is shared; each loader carries only a thin entrypoint and registration layer.
+In development: branch `26.2` tracks Minecraft 26.2 (currently pre-release). It builds against
+the 26.2 pre/rc line and is published to Modrinth as a beta; no GitHub release until 26.2 is stable.
 
-A single source set covers both 26.1.x and 26.2: the few Minecraft APIs Mojang renamed between
-those versions (`GameRenderer.getMainCamera()` → `mainCamera()`, `Minecraft.setScreen` →
-`setScreenAndShow`) are bridged reflectively in `McCompat`, so no per-version branch is needed.
+Dependencies: Fabric API (Fabric builds). ModMenu and Do a Barrel Roll are optional.
 
-## Building
+## Building from source
 
-Each loader is an independent Gradle project (JDK 25). Jars land in each project's `build/libs/`.
+Check out the branch for your Minecraft version, then build each loader:
 
-```
-# Fabric for 26.1.x (default coordinates in gradle.properties)
-cd fabric && ./gradlew build
+    cd fabric   && ./gradlew build
+    cd neoforge && ./gradlew build
 
-# Fabric for 26.2 — override the two version coordinates
-cd fabric && ./gradlew build -Pminecraft_version=26.2-rc-1 -Pfabric_version=0.152.0+26.2
+## Downloads
 
-# NeoForge (26.1.2)
-cd neoforge && ./gradlew build
-```
+- Modrinth: https://modrinth.com/mod/elytrahud3
+- Releases: https://github.com/Kishku7/elytrahud3/releases
 
-## Configuration
-
-Every element is individually toggleable, alongside an imperial/metric units switch. Open the
-config screen via ModMenu (Fabric) or the NeoForge mods list, or edit `config/elytrahud3.json`
-directly.
-
-## Do a Barrel Roll compatibility
-
-The HUD reads camera roll from Do a Barrel Roll's public API (`RollCamera`) by reflection — a soft,
-optional dependency. No DABR code is bundled; without it installed the HUD simply renders level.
-
-## Credits & license
-
-- Derived from [elytrahud-rework](https://github.com/wancor1/elytrahud-rework) by inorganic (MIT).
-- Flight-instrument HUD design inspired by [neo-elytra-hud](https://modrinth.com/mod/neo-elytra-hud) (CC0).
-- Roll compatibility via [Do a Barrel Roll](https://codeberg.org/enjarai/do-a-barrel-roll) by enjarai
-  (GPL-3.0) — used only through its public API; no GPL code is included.
-
-Licensed under the MIT License. See [LICENSE](LICENSE).
+By Kishku7, MIT licensed. Based on elytrahud-rework by inorganic / wancor1 (MIT).
