@@ -1,5 +1,10 @@
 # ElytraHud3
 
+## Branches
+
+- [26.2](https://github.com/Kishku7/elytrahud3/tree/26.2)
+- [26.1.2](https://github.com/Kishku7/elytrahud3/tree/26.1.2)
+
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/2ZxzbCzAHe)
 
 An aviation-style flight HUD for elytra flight.
@@ -17,9 +22,6 @@ Source for each Minecraft version lives on its own branch, named for the version
 | Branch    | Minecraft       | Fabric | NeoForge |
 | ---       | ---             | :---:  | :---:    |
 | `26.1.2`  | 26.1 - 26.1.2   | Yes    | Yes      |
-
-In development: branch `26.2` tracks Minecraft 26.2 (currently pre-release). It builds against
-the 26.2 pre/rc line and is published to Modrinth as a beta; no GitHub release until 26.2 is stable.
 
 Dependencies: Fabric API (Fabric builds). ModMenu and Do a Barrel Roll are optional.
 
