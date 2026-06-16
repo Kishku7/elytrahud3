@@ -1,40 +1,32 @@
-# ElytraHud3
+# ElytraHud3 - branch `26.2`
 
-## Branches
+Client-only elytra-flight HUD mod. This branch holds the **Minecraft 26.2 line** (pre-release).
 
-- [26.2](https://github.com/Kishku7/elytrahud3/tree/26.2)
-- [26.1.2](https://github.com/Kishku7/elytrahud3/tree/26.1.2)
+Builds are standalone per loader - no Architectury, no shared `common` module.
 
-[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/2ZxzbCzAHe)
+## Layout
 
-An aviation-style flight HUD for elytra flight.
+| Path             | Loader   | Minecraft   |
+| ---              | ---      | ---         |
+| `Fabric/26.2/`   | Fabric   | 26.2 (pre)  |
+| `NeoForge/26.2/` | NeoForge | 26.2 (pre)  |
 
-While you're gliding, ElytraHud3 shows a corner instrument cluster: airspeed, altitude,
-vertical speed, an artificial horizon, a compass, and elytra durability. Units toggle
-between imperial and metric, every gauge is individually toggleable, and the artificial
-horizon is roll-aware (compatible with Do a Barrel Roll). Client-side only.
+See each folder's README for build details.
 
-## Supported platforms
+## Build
 
-Source for each Minecraft version lives on its own branch, named for the version.
-`main` (this branch) is just the overview.
+```
+cd Fabric/26.2   && ./gradlew build
+cd NeoForge/26.2 && ./gradlew build
+```
 
-| Branch    | Minecraft       | Fabric | NeoForge |
-| ---       | ---             | :---:  | :---:    |
-| `26.1.2`  | 26.1 - 26.1.2   | Yes    | Yes      |
+Requires JDK 25 (Minecraft 26.x toolchain).
 
-Dependencies: Fabric API (Fabric builds). ModMenu and Do a Barrel Roll are optional.
+## Links
 
-## Building from source
-
-Check out the branch for your Minecraft version, then build each loader:
-
-    cd fabric   && ./gradlew build
-    cd neoforge && ./gradlew build
-
-## Downloads
-
+- Other branches: [`26.1`](https://github.com/Kishku7/elytrahud3/tree/26.1), [`1.20.x`](https://github.com/Kishku7/elytrahud3/tree/1.20.x), [`1.21.x`](https://github.com/Kishku7/elytrahud3/tree/1.21.x)
+- Overview: [`main`](https://github.com/Kishku7/elytrahud3/tree/main)
 - Modrinth: https://modrinth.com/mod/elytrahud3
-- Releases: https://github.com/Kishku7/elytrahud3/releases
+- Discord: https://discord.gg/2ZxzbCzAHe
 
-By Kishku7, MIT licensed. Based on elytrahud-rework by inorganic / wancor1 (MIT).
+MIT licensed. Based on elytrahud-rework by inorganic / wancor1 (MIT).

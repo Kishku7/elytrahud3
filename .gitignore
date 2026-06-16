@@ -1,23 +1,5 @@
-# Gradle / build outputs
-build/
 .gradle/
-*/build/
-*/.gradle/
-bin/
+build/
 out/
-
-# Logs
-*.log
-
-# IDE
-.idea/
-*.iml
-.vscode/
-
-# Run dirs
 run/
-*/run/
-
-# OS
-.DS_Store
-Thumbs.db
+*.log
