@@ -1,19 +1,18 @@
-# ElytraHud3 - NeoForge (Minecraft 26.2)
+# ElytraHud3 - NeoForge 26.2 (Minecraft 26.2 line)
 
-Client-only elytra-flight HUD mod for the **NeoForge** loader, Minecraft **26.2** (pre-release line).
+Client-only elytra flight HUD - **NeoForge** build for Minecraft **26.2 line**.
+Standalone build (no Architectury, no shared `common` module).
 
-This is a standalone NeoForge build (ModDevGradle) - no Architectury, no shared `common` module.
+- **Covers:** 26.2 line
+- **Built against:** a local NeoForge 26.2 alpha (no public NeoForge 26.2 yet)
+- **Toolchain:** JDK 25, ModDevGradle (MDG), mojmap mappings.
+- **Rendering:** 2D `Matrix3x2fStack` pose.
+- **Registration:** `RegisterGuiLayersEvent`.
 
 ## Build
 
 ```
-./gradlew build
+./gradlew build      # Windows: .\gradlew.bat build
 ```
 
-(Windows: `.\gradlew.bat build`)
-
-Requires JDK 25 (Minecraft 26.x toolchain).
-
-## Output
-
-`build/libs/elytrahud3-<version>.jar`
+Output: `build/libs/elytrahud3-*.jar`.
