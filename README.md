@@ -4,7 +4,6 @@ A **client-side** aviation-style flight HUD for elytra flight.
 
 While you are gliding, ElytraHud3 draws a corner instrument cluster: **airspeed, altitude, vertical speed, an artificial horizon, a compass, and elytra durability**. Units toggle between imperial (default) and metric, every gauge is individually toggleable with optional titles and numeric value boxes, and the artificial horizon is roll-aware (compatible with Do a Barrel Roll). It is client-side only - safe to run without installing it on the server.
 
-[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/2ZxzbCzAHe)
 
 ## Branches
 
@@ -55,6 +54,5 @@ Open the config screen through **Mod Menu** (Fabric, if Mod Menu is installed) o
 
 - Modrinth: https://modrinth.com/mod/elytrahud3
 - Releases: https://github.com/Kishku7/elytrahud3/releases
-- Discord: https://discord.gg/2ZxzbCzAHe
 
 By Kishku7, MIT licensed. Based on elytrahud-rework by inorganic / wancor1 (MIT).
