@@ -32,6 +32,5 @@ Output jar: `build/libs/elytrahud3-*.jar`. Requires JDK 25 (Minecraft 26.x toolc
 - Other branches: [`1.20.x`](https://github.com/Kishku7/elytrahud3/tree/1.20.x), [`1.21.x`](https://github.com/Kishku7/elytrahud3/tree/1.21.x), [`26.1`](https://github.com/Kishku7/elytrahud3/tree/26.1)
 - Overview: [`main`](https://github.com/Kishku7/elytrahud3/tree/main)
 - Modrinth: https://modrinth.com/mod/elytrahud3
-- Discord: https://discord.gg/2ZxzbCzAHe
 
 MIT licensed. Based on elytrahud-rework by inorganic / wancor1 (MIT).
