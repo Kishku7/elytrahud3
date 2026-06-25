@@ -16,8 +16,7 @@ no Architectury, no shared `common` module.
 | --- | --- | --- |
 | [`1.20.x`](https://github.com/Kishku7/elytrahud3/tree/1.20.x) | 1.20.1 - 1.20.6 | Fabric (+ Quilt), Forge, NeoForge |
 | [`1.21.x`](https://github.com/Kishku7/elytrahud3/tree/1.21.x) | 1.21 - 1.21.11 | Fabric (+ Quilt), Forge, NeoForge |
-| [`26.1`](https://github.com/Kishku7/elytrahud3/tree/26.1) | 26.1 - 26.1.2 | Fabric, NeoForge |
-| [`26.2`](https://github.com/Kishku7/elytrahud3/tree/26.2) | 26.2 (pre-release) | Fabric, NeoForge |
+| [`26`](https://github.com/Kishku7/elytrahud3/tree/26) | 26.1 -> 26.3-snapshot-1 | Fabric, NeoForge |
 
 Open a branch and read its README for the loaders, versions, and any version exclusions in that line.
 
