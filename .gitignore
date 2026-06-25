@@ -3,3 +3,5 @@ build/
 out/
 run/
 *.log
+dist/
+_build*.log

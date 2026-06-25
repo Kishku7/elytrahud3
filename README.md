@@ -1,36 +1,40 @@
-# ElytraHud3 - branch `26.2`
+# ElytraHud3 -- MC 26.x (unified line)
 
-Client-only aviation-style elytra flight HUD. This branch holds the Minecraft **26.2 (pre-release)** source.
-Pure Java, no mixins, Do a Barrel Roll compatible. Standalone per loader - no Architectury, no shared
-`common` module. Mojang (mojmap) mappings throughout.
+Aviation-style flight HUD for elytras: a corner instrument cluster (airspeed, altitude, vertical
+speed, artificial horizon, compass, durability) shown while gliding. Imperial/metric toggle,
+*Do a Barrel Roll* roll-aware horizon. Pure Java, no Kotlin/YACL. License MIT.
 
-> **Pre-release line.** Published to Modrinth as **beta** only; no GitHub release is cut until 26.2 is stable. The NeoForge build targets a local NeoForge 26.2 alpha (no public NeoForge 26.2 exists yet).
+This is the **unified 26.x branch**. One source tree builds every supported MC 26.x version on both
+loaders; per-version differences are absorbed at runtime by `McCompat` (reflective shim), so there are
+no per-version source forks.
 
-## Platforms
+## Layout
 
-- [`Fabric/`](Fabric) - 1 build(s); see its README for versions and exclusions.
-- [`NeoForge/`](NeoForge) - 1 build(s); see its README for versions and exclusions.
+| Dir | Contents |
+|-----|----------|
+| `shared_common/` | MC-agnostic shared code (`ElytraHudConfig`) + shared assets (lang, textures, icon). Single source of truth. |
+| `shared_minecraft/` | MC-coupled shared client code (`HudData`, `HudRenderer`, `HudRenderHelper`, `ElytraHudConfigScreen`, `McCompat`). Identical across loaders + versions. |
+| `Fabric/` | Fabric platform glue only (`Common` entrypoint, `ConfigManager`, `ElytraHudModMenu`, `fabric.mod.json`). |
+| `NeoForge/` | NeoForge platform glue only (`Common`, `ConfigManager`, `ElytraHud3NeoForge`, `ElytraHud3NeoForgeClient`, `neoforge.mods.toml`). |
 
-## Not supported on this line
-
-- **Forge** is not built for the 26.x line - ForgeGradle 6 cannot build unobfuscated Minecraft 26.x and there is no FG7.
-- **Quilt** is not supported on the 26.x line - Quilt retired Quilted Fabric API (and Quilt Mappings) at 26.1, so the Fabric API compatibility path ElytraHud3 depends on is no longer provided on Quilt for 26.x. (Quilt remains supported on the 1.20.x and 1.21.x branches.)
+Each loader build pulls the two `shared_*` trees in via `srcDir`, so the shared code lives in exactly
+one place. Edit the canonical copy under `shared_common/` or `shared_minecraft/` -- never a build output.
 
 ## Build
 
-Each loader/version folder is its own standalone Gradle project:
+Per-platform scripts loop the supported-version matrix and stage jars to `dist/`:
 
 ```
-cd <Loader>/<version>
-./gradlew build      # Windows: .\gradlew.bat build
+pwsh build-all-fabric.ps1            # 26.1.2, 26.2, 26.3-snapshot-1
+pwsh build-all-neoforge.ps1          # 26.1.2, 26.2   (NeoForge has no 26.3 yet)
+pwsh build-all-fabric.ps1 26.2       # a single target
 ```
 
-Output jar: `build/libs/elytrahud3-*.jar`. Requires JDK 25 (Minecraft 26.x toolchain).
+Toolchain: JDK 25. Fabric = fabric-loom 1.15.5; NeoForge = ModDevGradle 2.0.140.
 
-## Links
+## Supported versions
 
-- Other branches: [`1.20.x`](https://github.com/Kishku7/elytrahud3/tree/1.20.x), [`1.21.x`](https://github.com/Kishku7/elytrahud3/tree/1.21.x), [`26.1`](https://github.com/Kishku7/elytrahud3/tree/26.1)
-- Overview: [`main`](https://github.com/Kishku7/elytrahud3/tree/main)
-- Modrinth: https://modrinth.com/mod/elytrahud3
-
-MIT licensed. Based on elytrahud-rework by inorganic / wancor1 (MIT).
+| Loader | MC versions |
+|--------|-------------|
+| Fabric | 26.1.2, 26.2, 26.3-snapshot-1 (alpha) |
+| NeoForge | 26.1.2, 26.2 |

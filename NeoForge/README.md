@@ -1,23 +1,12 @@
-# ElytraHud3 - NeoForge (Minecraft 26.2 (pre-release))
+# ElytraHud3 -- NeoForge (26.x)
 
-Client-only elytra flight HUD, **NeoForge** loader builds for the Minecraft 26.2 (pre-release) line.
-Standalone - no Architectury, no shared `common` module.
-
-## Builds
-
-| Version folder | Built against | JDK | Covers | Registration |
-| --- | --- | --- | --- | --- |
-| [`26.2/`](26.2) | a local NeoForge 26.2 alpha (no public NeoForge 26.2 yet) | 25 | 26.2 line | `RegisterGuiLayersEvent` |
-
-Each row is its own folder with a README and a standalone Gradle build. The HUD render code
-(`HudRenderer` / `HudRenderHelper`) is shared across builds; only per-version render-API adaptations
-and the per-loader registration glue differ.
-
-## Build
+NeoForge platform glue for the unified 26.x line. Shared code is pulled from `../shared_common` and
+`../shared_minecraft` via `srcDir`; this folder holds only NeoForge-specific files:
+`Common` (holder), `ConfigManager` (FMLPaths config dir), `ElytraHud3NeoForge`,
+`ElytraHud3NeoForgeClient`, and the templated `neoforge.mods.toml`.
 
 ```
-cd <version>
-./gradlew build      # Windows: .\gradlew.bat build
+.\gradlew.bat build -Pminecraft_version=26.2 -Pneo_version=26.2.0.1-beta -Pneoforge_range="[26.2.0-alpha,)" -Pmc_range="[26.2,26.3)"
 ```
 
-Output: `build/libs/elytrahud3-*.jar`.
+Supported MC: 26.1.2, 26.2. (NeoForge has no 26.3 build yet.) Toolchain: ModDevGradle 2.0.140, JDK 25.
