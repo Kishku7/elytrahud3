@@ -8,7 +8,7 @@ $dist   = Join-Path $repo "dist"
 New-Item -ItemType Directory -Force -Path $dist | Out-Null
 
 $matrix = [ordered]@{
-  "26.1" = @{ mc = "26.1.2";          api = "0.152.1+26.1.2"; loader = "0.18.6"; dep = ">=26.1 <26.2" }
+  "26.1" = @{ mc = "26.1.2";          api = "0.152.1+26.1.2"; loader = "0.18.6"; dep = ">=26.1- <26.2" }
   "26.2" = @{ mc = "26.2";            api = "0.152.1+26.2";   loader = "0.19.3"; dep = ">=26.2- <26.3" }
   "26.3" = @{ mc = "26.3-snapshot-1"; api = "0.153.1+26.3";   loader = "0.19.3"; dep = ">=26.3- <26.4" }
 }
