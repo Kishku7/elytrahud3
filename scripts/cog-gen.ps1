@@ -47,8 +47,17 @@ $gpLine = Select-String -Path (Join-Path $cell 'gradle.properties') -Pattern '^m
 if ($gpLine) { $mcBuild = $gpLine.Matches[0].Groups[1].Value.Trim() }
 $pf = $packFormats[$mcBuild]
 if (-not $pf) { throw "no pack_format for $mcBuild -- extend the table (knowledge/pack-formats.md)" }
-('{"pack":{"description":"elytrahud3 resources","pack_format":' + $pf + '}}') |
-    Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii
+# pf > 64 (MC 1.21.9+): the pack codec makes min_format/max_format MANDATORY for packs
+# declaring support newer than 64 (runtime-verified: MC 1.21.10 rejects a plain-int
+# pf-75 mod pack with "missing mandatory fields min_format and max_format" -> the mod
+# resource pack is skipped). Emit the exact-single range form there, same shape as 26.x.
+if ($pf -gt 64) {
+    ('{"pack":{"description":"elytrahud3 resources","pack_format":' + $pf + ',"min_format":' + $pf + ',"max_format":' + $pf + '}}') |
+        Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii
+} else {
+    ('{"pack":{"description":"elytrahud3 resources","pack_format":' + $pf + '}}') |
+        Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii
+}
 
 # ---- 5. run cog on every marker file in gen ----
 $env:PYTHONDONTWRITEBYTECODE = '1'

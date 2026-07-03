@@ -10,7 +10,7 @@ Era axes (MC 1.20 - 1.21.11 pre-26 cells; javap-verified, see MATRIX.md "Era mod
   gfx        : GuiGraphicsExtractor + .text()   @26   | GuiGraphics + .drawString()  pre-26
   blit       : RenderPipelines.GUI_TEXTURED+tint @1.21.6 | RenderType::guiTextured @1.21.2 | legacy
   pose       : 2D Matrix3x2fStack @1.21.6        | 3D PoseStack + Axis.ZP below
-  id         : Identifier @1.21.9               | ResourceLocation.fromNamespaceAndPath @1.21
+  id         : Identifier @1.21.11 (mojmap rename) | ResourceLocation.fromNamespaceAndPath @1.21
                (Forge backported the factory at 1.20.4/49.2 and deprecated the ctor there)
                | new ResourceLocation below
   tick delta : DeltaTracker @1.21               | float partialTick below
@@ -37,7 +37,19 @@ def has_delta_tracker(ver):
 
 
 def renamed_identifier(ver):
-    # Identifier rename landed at 1.21.9; true for the whole 26 line as well.
+    # MOJMAP ResourceLocation->Identifier rename lands at MC 1.21.11 (javap/runtime-verified:
+    # NeoForge 21.10.64 VanillaGuiLayers.HOTBAR is still ResourceLocation-typed -> a jar
+    # compiled at 1.21.11 NoSuchFieldErrors on 1.21.9/1.21.10 mojmap runtimes). Fabric pre-26
+    # spans the rename via intermediary, so only mojmap-runtime cells (NeoForge) below
+    # 1.21.11 need the ResourceLocation flavor. True for the whole 26 line as well.
+    return _vt(ver) >= (1, 21, 11)
+
+
+def nf_ctor_dist(ver):
+    # NeoForge @Mod ctor era: the injected-Dist 3-arg ctor (IEventBus, ModContainer, Dist)
+    # is used from the 1.21.9 line (present on 21.9/21.10 per M1; FMLEnvironment.dist is
+    # GONE at 21.11 so 1.21.9+ all take the injected Dist). Decoupled from the Identifier
+    # rename, which lands later (1.21.11).
     return _vt(ver) >= (1, 21, 9)
 
 

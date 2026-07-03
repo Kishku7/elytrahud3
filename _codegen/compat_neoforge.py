@@ -108,7 +108,7 @@ public final class ElytraHud3NeoForgeClient {
 def emit_entry(cog, ver, codegen):
     t = core.read_twin(codegen, "NeoForge/26/src/main/java/dev/kishku/elytrahud3/ElytraHud3NeoForge.java")
     if not core.is26(ver):
-        if core.renamed_identifier(ver):
+        if core.nf_ctor_dist(ver):
             t = core.sub(t, "public ElytraHud3NeoForge(ModContainer mod, IEventBus bus, Dist dist) {",
                          "public ElytraHud3NeoForge(IEventBus bus, ModContainer mod, Dist dist) {", count=1)
         else:
