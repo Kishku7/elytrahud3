@@ -40,8 +40,13 @@ $packFormats = @{
     '1.21'=34; '1.21.1'=34; '1.21.2'=42; '1.21.3'=42; '1.21.4'=46; '1.21.5'=55;
     '1.21.6'=63; '1.21.7'=64; '1.21.8'=64; '1.21.9'=69; '1.21.10'=69; '1.21.11'=75
 }
-$pf = $packFormats[$McVer]
-if (-not $pf) { throw "no pack_format for $McVer -- extend the table (knowledge/pack-formats.md)" }
+# The cell DIR is the coverage key; the jar is BUILT against the cell's minecraft_version
+# (e.g. Fabric/1.20.4 builds MC 1.20.1 and claims >=1.20.1 <1.21) -- pf follows the BUILD version.
+$mcBuild = $McVer
+$gpLine = Select-String -Path (Join-Path $cell 'gradle.properties') -Pattern '^minecraft_version=(.+)$' -ErrorAction SilentlyContinue
+if ($gpLine) { $mcBuild = $gpLine.Matches[0].Groups[1].Value.Trim() }
+$pf = $packFormats[$mcBuild]
+if (-not $pf) { throw "no pack_format for $mcBuild -- extend the table (knowledge/pack-formats.md)" }
 ('{"pack":{"description":"elytrahud3 resources","pack_format":' + $pf + '}}') |
     Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii
 
@@ -52,4 +57,4 @@ Get-ChildItem (Join-Path $gen 'src\main\java') -Recurse -File -Filter *.java |
         & cog -r -D loader=$Loader -D ver=$McVer -D codegen=$cg $_.FullName | Out-Null
         if ($LASTEXITCODE -ne 0) { throw ("cog failed: " + $_.FullName) }
     }
-Write-Host ("cog-gen OK: {0} (pf={1})" -f $Cell, $pf)
+Write-Host ("cog-gen OK: {0} (mc={1} pf={2})" -f $Cell, $mcBuild, $pf)

@@ -20,6 +20,7 @@ import compat_core as core
 _NF204_CLIENT = """package dev.kishku.elytrahud3;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.ConfigScreenHandler;
@@ -55,7 +56,10 @@ public final class ElytraHud3NeoForgeClient {
     }
 
     private static void registerOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "elytrahud3_hud",
+        // 20.4 deprecated-for-removal the String-id overloads; use the ResourceLocation-id one
+        // (javap-verified on neoforge-20.4.237-universal). The NeoForge 1.20.x line keeps the
+        // undeprecated ResourceLocation ctor (no factory backport, unlike Forge 49.2+).
+        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(Common.MODID, "hud"),
             (gui, graphics, partialTick, screenWidth, screenHeight) -> {
                 ElytraHudConfig config = Common.CONFIG;
                 if (config == null || !config.modEnabled) {

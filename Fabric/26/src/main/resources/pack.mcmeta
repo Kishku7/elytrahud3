@@ -1,6 +1,8 @@
 {
   "pack": {
     "description": "elytrahud3 resources",
-    "pack_format": 8
+    "pack_format": ${packFormat},
+    "min_format": ${packFormat},
+    "max_format": ${packFormat}
   }
 }

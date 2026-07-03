@@ -1,0 +1,64 @@
+plugins {
+    id 'net.fabricmc.fabric-loom-remap' version '1.16-SNAPSHOT'
+}
+
+version = "${project.mod_version}+${project.minecraft_version}-fabric"
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven { url = 'https://maven.terraformersmc.com/' }
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.nucleoid.xyz' }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // ModMenu is optional at runtime; needed only to compile the config-screen entrypoint.
+    modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.compilerArgs << '-Xlint:all'
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+// Unified-source wiring (minecraft-1.20-26.3): compile the cog-materialized gen/ tree +
+// the MC-agnostic shared_common; the cell keeps only its manifest under src/main/resources.
+sourceSets.main.java.srcDirs = ['gen/src/main/java', '../../shared_common/src/main/java']
+sourceSets.main.resources.srcDirs = ['src/main/resources', 'gen/src/main/resources', '../../shared_common/src/main/resources']
+
+// gson (an MC library) references ErrorProne annotations that are not on the compile
+// classpath; -Xlint:all then warns while reading GsonBuilder.class. Making the annotations
+// resolvable (compile-only, ships nothing) is the clean zero-warnings fix.
+repositories { mavenCentral() }
+dependencies { compileOnly 'com.google.errorprone:error_prone_annotations:2.28.0' }

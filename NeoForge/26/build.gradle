@@ -40,11 +40,22 @@ neoForge {
 }
 
 processResources {
+    // 26.x pack_format > 81 needs the exact-single range form (see Fabric/26 + pack-formats.md);
+    // value injected per 26.X by build-neoforge.ps1 via PACK_FORMAT env.
+    def packFormat = (System.getenv("PACK_FORMAT") ?: "88")
     def expandProps = [mod_version: mod_version, neoforgeRange: project.neoforge_range, mcRange: project.mc_range]
     inputs.properties(expandProps)
+    inputs.property('packFormat', packFormat)
     filesMatching('META-INF/neoforge.mods.toml') { expand(expandProps) }
+    filesMatching('pack.mcmeta') { expand('packFormat': packFormat) }
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:all'
+}
+
+dependencies {
+    // gson references ErrorProne annotations; resolvable compile-only keeps -Xlint:all silent.
+    compileOnly 'com.google.errorprone:error_prone_annotations:2.28.0'
 }

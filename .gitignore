@@ -7,3 +7,5 @@ dist/
 _build*.log
 gen/
 __pycache__/
+_build-*-progress.txt
+_build_*.log

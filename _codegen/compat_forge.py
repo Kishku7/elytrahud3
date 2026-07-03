@@ -4,8 +4,10 @@ boot-verified 1.1.x-line files rather than derived from a 26 twin.
 
 Eras (glue-API map, elytrahud3.md; EventBus boundary pinned by javap, mod-version-gates.md):
   entry:
-    <=1.21.5 (Forge <=55) : classic no-arg ctor + FMLJavaModLoadingContext.get().getModEventBus()
-    1.21.6+  (Forge 56+)  : EventBus 7 -- ctor (FMLJavaModLoadingContext) + context.getModBusGroup()
+    1.20/1.20.1 (46/47)   : classic no-arg ctor + FMLJavaModLoadingContext.get() (undeprecated there)
+    1.20.4+ (49.2+)       : ctor (FMLJavaModLoadingContext) injection; the context IS a
+                            ModLoadingContext (extends it), so client glue gets the extension
+                            point + mod bus (classic IEventBus <=55, BusGroup 56+) from it
   client:
     1.20/1.20.1 (46/47)   : RegisterGuiOverlaysEvent/IGuiOverlay + VanillaGuiOverlay.HOTBAR.id()
                             (this jar is also the NeoForge <=1.20.1 jar -- fork point)
@@ -41,21 +43,22 @@ public class ElytraHud3Forge {
 }
 """
 
-_ENTRY_EB7 = """package dev.kishku.elytrahud3;
+_ENTRY_INJECTED = """package dev.kishku.elytrahud3;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @Mod(Common.MODID)
 public class ElytraHud3Forge {
+    // Forge 49.2+ injects the context into the mod ctor and deprecates-for-removal the .get()
+    // statics; FMLJavaModLoadingContext extends ModLoadingContext (javap-verified 50/52/55/58),
+    // so the client glue reaches registerExtensionPoint through this same instance.
     public ElytraHud3Forge(FMLJavaModLoadingContext context) {
         Common.CONFIG = ConfigManager.getConfig();
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            BusGroup modBus = context.getModBusGroup();
-            ElytraHud3ForgeClient.init(modBus);
+            ElytraHud3ForgeClient.init(context);
         }
     }
 }
@@ -154,8 +157,7 @@ import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.gui.overlay.ForgeLayeredDraw;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * Forge 1.20.6 client bootstrap. Forge 1.20.6 (50.x) replaced RegisterGuiOverlaysEvent/IGuiOverlay
@@ -167,10 +169,11 @@ import net.minecraftforge.fml.ModLoadingContext;
 public final class ElytraHud3ForgeClient {
     private ElytraHud3ForgeClient() {}
 
-    public static void init(IEventBus modBus) {
-        modBus.addListener(ElytraHud3ForgeClient::addGuiLayers);
+    public static void init(FMLJavaModLoadingContext context) {
+        // Injected context (49.2+ style): mod bus + extension point without the deprecated .get()s.
+        context.getModEventBus().addListener(ElytraHud3ForgeClient::addGuiLayers);
         MinecraftForge.EVENT_BUS.addListener(ElytraHud3ForgeClient::onClientTick);
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+        context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
             () -> new ConfigScreenHandler.ConfigScreenFactory(
                 (mc, parent) -> new ElytraHudConfigScreen(parent)));
     }
@@ -238,11 +241,10 @@ import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
- * Forge 1.21-1.21.5 (51.x-55.x) client bootstrap. HUD is a LayeredDraw layer attached with the
+ * Forge 1.21.1-1.21.5 (52.x-55.x) client bootstrap. HUD is a LayeredDraw layer attached with the
  * anchor-FREE 2-arg getLayeredDraw().add(newLayer, layer) -- the anchor-relative addBelow/addAbove
  * overloads fail at AddGuiOverlayLayersEvent time on 52.x/55.x ("Expected layer ... was not found
  * in stack minecraft:vanilla_root"), silently rendering nothing; the anchor-free add needs no
@@ -254,10 +256,11 @@ import net.minecraftforge.fml.ModLoadingContext;
 public final class ElytraHud3ForgeClient {
     private ElytraHud3ForgeClient() {}
 
-    public static void init(IEventBus modBus) {
-        modBus.addListener(ElytraHud3ForgeClient::addGuiLayers);
+    public static void init(FMLJavaModLoadingContext context) {
+        // Injected context (49.2+ style): mod bus + extension point without the deprecated .get()s.
+        context.getModEventBus().addListener(ElytraHud3ForgeClient::addGuiLayers);
         MinecraftForge.EVENT_BUS.addListener(ElytraHud3ForgeClient::onClientTick);
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+        context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
             () -> new ConfigScreenHandler.ConfigScreenFactory(
                 (mc, parent) -> new ElytraHudConfigScreen(parent)));
     }
@@ -322,8 +325,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * Forge 1.21.6+ (56.x+) client bootstrap. Forge 56 rewrote the event bus (EventBus 7.x BusGroup):
@@ -334,10 +336,11 @@ import net.minecraftforge.fml.ModLoadingContext;
 public final class ElytraHud3ForgeClient {
     private ElytraHud3ForgeClient() {}
 
-    public static void init(BusGroup modBus) {
-        AddGuiOverlayLayersEvent.getBus(modBus).addListener(ElytraHud3ForgeClient::addGuiLayers);
+    public static void init(FMLJavaModLoadingContext context) {
+        // Injected context: BusGroup + extension point without the deprecated .get() statics.
+        AddGuiOverlayLayersEvent.getBus(context.getModBusGroup()).addListener(ElytraHud3ForgeClient::addGuiLayers);
         TickEvent.ClientTickEvent.Post.BUS.addListener(ElytraHud3ForgeClient::onClientTick);
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+        context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
             () -> new ConfigScreenHandler.ConfigScreenFactory(
                 (mc, parent) -> new ElytraHudConfigScreen(parent)));
     }
@@ -400,8 +403,15 @@ def _eb7(ver):
     return core._vt(ver) >= (1, 21, 6)
 
 
+def _injected(ver):
+    # ctor context injection exists from Forge 49.2 (MC 1.20.4); EH3 forge cells below that are
+    # 1.20 (46) / 1.20.1 (47) where the .get() statics are the undeprecated norm. The orphan
+    # Forge 51 line (MC 1.21, no injection) has NO cell -- do not add one without rechecking.
+    return core._vt(ver) >= (1, 20, 4)
+
+
 def emit_entry(cog, ver, codegen):
-    core.emit(cog, _ENTRY_EB7 if _eb7(ver) else _ENTRY_CLASSIC)
+    core.emit(cog, _ENTRY_INJECTED if _injected(ver) else _ENTRY_CLASSIC)
 
 
 def emit_client(cog, ver, codegen):

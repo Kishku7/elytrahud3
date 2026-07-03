@@ -1,0 +1,41 @@
+{
+    "schemaVersion": 1,
+    "id": "elytrahud3",
+    "version": "${version}",
+
+    "name": "ElytraHud3",
+    "description": "Aviation-style flight HUD for Minecraft elytras. Pure Java, Do a Barrel Roll compatible.",
+    "authors": [
+        "Kishku7"
+    ],
+    "contact": {
+        "homepage": "https://github.com/Kishku7/elytrahud3",
+        "issues": "https://github.com/Kishku7/elytrahud3/issues"
+    },
+
+    "license": "MIT",
+    "icon": "assets/elytrahud3/icon.png",
+
+    "environment": "client",
+    "entrypoints": {
+        "client": [
+            "dev.kishku.elytrahud3.Common"
+        ],
+        "modmenu": [
+            "dev.kishku.elytrahud3.ElytraHudModMenu"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=0.16.0",
+        "fabric-api": "*",
+        "minecraft": ">=1.21.6 <1.21.9",
+        "java": ">=21"
+    },
+    "suggests": {
+        "modmenu": ">=14.0.0",
+        "do-a-barrel-roll": "*"
+    },
+    "custom": {
+        "modmenu:api": "dev.kishku.elytrahud3.ElytraHudModMenu"
+    }
+}
