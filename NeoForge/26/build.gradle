@@ -19,9 +19,9 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 // Shared single-source-of-truth trees pulled in from the sibling shared_* dirs.
-sourceSets.main.java.srcDir "../shared_common/src/main/java"
-sourceSets.main.java.srcDir "../shared_minecraft/src/main/java"
-sourceSets.main.resources.srcDir "../shared_common/src/main/resources"
+sourceSets.main.java.srcDir "../../shared_common/src/main/java"
+sourceSets.main.java.srcDir "../../shared_minecraft/src/main/java"
+sourceSets.main.resources.srcDir "../../shared_common/src/main/resources"
 
 neoForge {
     version = project.neo_version
