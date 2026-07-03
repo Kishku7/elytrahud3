@@ -5,3 +5,5 @@ run/
 *.log
 dist/
 _build*.log
+gen/
+__pycache__/

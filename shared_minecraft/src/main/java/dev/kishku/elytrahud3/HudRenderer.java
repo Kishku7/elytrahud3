@@ -110,7 +110,7 @@ public class HudRenderer {
             int compassY = 15;
             renderCompass(graphics, compassX + 50, compassY + 50, (float) Math.toRadians(displayedYaw));
             int intYaw = (((int) Math.round(hudData.yaw) + 180) % 360 + 360) % 360;
-            graphics.text(client.font, String.format("%3d°", intYaw), compassX + 37, compassY - 6, -1);
+            graphics.text(client.font, String.format("%3d\u00B0", intYaw), compassX + 37, compassY - 6, -1);
         }
     }
 

@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 
 /**
  * Cross-version accessors for the handful of Minecraft APIs Mojang renamed between
- * MC 26.1 and 26.2. Resolved reflectively (and cached) so a single source — and a single
- * jar — works on both. Renames handled:
+ * MC 26.1 and 26.2. Resolved reflectively (and cached) so a single source -- and a single
+ * jar -- works on both. Renames handled:
  *   GameRenderer.getMainCamera()  (26.1)  ->  mainCamera()        (26.2)
  *   Minecraft.setScreen(Screen)   (26.1)  ->  setScreenAndShow(Screen) (26.2)
  */

@@ -15,7 +15,7 @@ public final class ElytraHud3NeoForgeClient {
     private ElytraHud3NeoForgeClient() {}
 
     public static void init(ModContainer mod, IEventBus bus) {
-        // NOTE: do NOT touch Minecraft.getInstance() here — during @Mod construction it can be null.
+        // NOTE: do NOT touch Minecraft.getInstance() here -- during @Mod construction it can be null.
         bus.addListener(ElytraHud3NeoForgeClient::registerGuiLayers);
         NeoForge.EVENT_BUS.addListener(ElytraHud3NeoForgeClient::onClientTick);
         mod.registerExtensionPoint(IConfigScreenFactory.class,
