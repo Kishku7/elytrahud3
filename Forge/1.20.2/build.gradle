@@ -1,0 +1,46 @@
+plugins {
+    id 'eclipse'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = "${mod_version}+${minecraft_version}-forge"
+group = 'dev.kishku.elytrahud3'
+
+base {
+    archivesName = 'elytrahud3'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: 'official', version: '1.20.2'
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${forge_version}"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:all'
+    options.release = 17
+}
+
+// No mixins -> no refmap, no MixinConfigs manifest. ${file.jarVersion} in mods.toml resolves at
+// runtime from the jar manifest Implementation-Version.
+jar {
+    manifest {
+        attributes 'Implementation-Version': project.mod_version
+    }
+}
+
+// Unified-source wiring (minecraft-1.20-26.3): compile the cog-materialized gen/ tree +
+// the MC-agnostic shared_common; the cell keeps only its manifest under src/main/resources.
+sourceSets.main.java.srcDirs = ['gen/src/main/java', '../../shared_common/src/main/java']
+sourceSets.main.resources.srcDirs = ['src/main/resources', 'gen/src/main/resources', '../../shared_common/src/main/resources']
+
+// gson (an MC library) references ErrorProne annotations that are not on the compile
+// classpath; -Xlint:all then warns while reading GsonBuilder.class. Making the annotations
+// resolvable (compile-only, ships nothing) is the clean zero-warnings fix.
+repositories { mavenCentral() }
+dependencies { compileOnly 'com.google.errorprone:error_prone_annotations:2.28.0' }

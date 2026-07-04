@@ -13,13 +13,13 @@ description = '''Aviation-style flight HUD for Minecraft elytras. Do a Barrel Ro
 [[dependencies.elytrahud3]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.9,21.11)"
+versionRange = "[21.10,21.11)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.elytrahud3]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.9,1.21.11)"
+versionRange = "[1.21.10,1.21.11)"
 ordering = "NONE"
 side = "CLIENT"

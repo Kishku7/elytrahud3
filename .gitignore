@@ -9,3 +9,4 @@ gen/
 __pycache__/
 _build-*-progress.txt
 _build_*.log
+MATRIX.md

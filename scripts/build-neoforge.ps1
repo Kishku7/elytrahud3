@@ -10,7 +10,7 @@ $prog = Join-Path $repoRoot 'scripts\_build-neoforge-progress.txt'
 Remove-Item $prog -ErrorAction SilentlyContinue
 
 # ---- pre-26 cells (cog-materialized; per-cell gradle.properties pin org.gradle.java.home) ----
-$cells = @('1.20.4','1.20.6','1.21','1.21.1','1.21.2','1.21.5','1.21.8','1.21.9','1.21.11')
+$cells = @('1.20.4','1.20.6','1.21','1.21.1','1.21.2','1.21.5','1.21.8','1.21.10','1.21.11')
 # ---- 26 line (matrix; cell NeoForge/26 srcDirs shared_minecraft directly, no cog).
 #      pf = per-26.X resource pack_format (authoritative: Memory/knowledge/pack-formats.md) ----
 $matrix26 = [ordered]@{
