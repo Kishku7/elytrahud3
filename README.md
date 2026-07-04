@@ -57,7 +57,7 @@ that loader into `dist/`; pass one or more versions to build a subset.
 ```
 pwsh scripts/build-fabric.ps1              # all Fabric cells + the 26 matrix
 pwsh scripts/build-neoforge.ps1            # all NeoForge cells + the 26 matrix
-pwsh scripts/build-forge.ps1               # all Forge cells (no 26 -- FG6 ceiling 1.21.8)
+pwsh scripts/build-forge.ps1               # all Forge cells (EH3 builds through 1.21.8; no 26 -- no Forge on 26.x)
 pwsh scripts/build-fabric.ps1 1.21.5 26.2  # a subset
 ```
 
@@ -81,13 +81,14 @@ twin on every pre-26 cell.
 |--------|-------------|-------|
 | **Fabric** | 1.20 - 26.3-snapshot-2 (continuous) | intermediary runtime spans rename boundaries; one jar per render era |
 | **NeoForge** | 1.20.1 - 26.2 (+ 1.21.10) | <= 1.20.1 served by the Forge 1.20.1 fork jar (tagged forge+neoforge); dedicated 1.21.10 (pre-`Identifier`-rename) cell |
-| **Forge** | 1.20, 1.20.1, **1.20.2 - 1.20.4**, 1.20.6, 1.21.1, 1.21.5, 1.21.8 | FG6 ceiling is 1.21.8; no Forge on 26.x |
+| **Forge** | 1.20, 1.20.1, **1.20.2 - 1.20.4**, 1.20.6, 1.21.1, 1.21.5, 1.21.8 | EH3 builds through 1.21.8; FG6 itself reaches 1.21.11 (1.21.10/1.21.11 pending, see below); no Forge on 26.x |
 
 **Known loader gaps (not bugs):**
 - Forge **1.21**, **1.21.3**, **1.21.4**, **1.21.6**, **1.21.7** - ORPHAN Forge builds (51/53/54/56/57):
-  the HUD/GUI-overlay registration API is absent (present only at Forge 50/52/55/58). A HUD mod has no
+  the HUD/GUI-overlay registration API is absent (present at Forge 50/52/55/58 and 60/61, but not these orphans). A HUD mod has no
   hook to attach there.
-- Forge **1.21.2** - MinecraftForge never shipped a 1.21.2 build. Forge is dead after 1.21.8.
+- Forge **1.21.2** - MinecraftForge never shipped a 1.21.2 build.
+- Forge **1.21.10 / 1.21.11** - not yet built for ElytraHud3 (a TODO, not a loader gap): FG6 reaches 1.21.11 and the overlay API (`AddGuiOverlayLayersEvent` / `ForgeLayeredDraw`) is present on forge 60/61 (javap-verified). Forge **1.21.9** is beta-only (59.x) and skipped. Tracked as a follow-up.
 - NeoForge **1.21.9** - the 21.9.16-beta transitional build is not client-test-gateable; the Fabric
   `+1.21.11` jar still covers MC 1.21.9/1.21.10. No NeoForge build for 26.3 yet.
 

@@ -1,0 +1,13 @@
+.gradle/
+build/
+out/
+run/
+*.log
+dist/
+_build*.log
+gen/
+__pycache__/
+_build-*-progress.txt
+_build_*.log
+MATRIX.md
+scripts/_publish_*.py
