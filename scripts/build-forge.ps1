@@ -1,13 +1,15 @@
 # build-forge.ps1 -- walk the pre-26 Forge cells: cog-gen -> gradle build -> dist/.
 # Usage: pwsh -File scripts\build-forge.ps1 [1.21.8 ...]   (no args = all pre-26 cells)
-# Forge has no 26 line (FG6 ceiling 1.21.8). Coverage notes:
+# Forge has no 26 line (FG6 ceiling 1.21.11). Coverage notes:
 #   1.20.2 cell serves MC 1.20.2-1.20.4 (Forge 48/49, IGuiOverlay era) -- Forge-loader users there (2026-07-04).
-#   1.21.5 cell = MC 1.21.5 only; 1.21.8 cell = MC 1.21.8 only.
+#   1.21.5/1.21.8 cells = those MC only; 1.21.10 (forge 60) + 1.21.11 (forge 61) cells added 2026-07-04,
+#   EventBus7 era, 1.21.11 = Identifier-rename flavor. Each serves its own MC only.
 # ORPHAN Forge builds (HUD-overlay registration API REMOVED -- only CustomizeGuiOverlayEvent +
 #   RenderPlayerEvent present; EH3 has no HUD hook, verified by javap/compile 2026-07-04):
 #   Forge 51 (1.21), 53 (1.21.3), 54 (1.21.4), 56 (1.21.6), 57 (1.21.7). The overlay API exists ONLY
-#   at 50 (1.20.6), 52 (1.21.1), 55 (1.21.5), 58 (1.21.8) -- the versions with cells. Also 1.21.2 =
-#   Forge never shipped; Forge dead after 1.21.8.
+#   at 50 (1.20.6), 52 (1.21.1), 55 (1.21.5), 58 (1.21.8), 60 (1.21.10), 61 (1.21.11) -- the versions
+#   with cells (60/61 overlay API javap-verified 2026-07-04). Also 1.21.2 = Forge never shipped;
+#   Forge 1.21.9 = beta (59.x), skipped. Forge is NOT dead after 1.21.8 (FG6 reaches 1.21.11).
 param([Parameter(ValueFromRemainingArguments)][string[]]$Only)
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
@@ -16,7 +18,7 @@ New-Item -ItemType Directory -Force -Path $dist | Out-Null
 $prog = Join-Path $repoRoot 'scripts\_build-forge-progress.txt'
 Remove-Item $prog -ErrorAction SilentlyContinue
 
-$cells = @('1.20','1.20.1','1.20.2','1.20.6','1.21.1','1.21.5','1.21.8')
+$cells = @('1.20','1.20.1','1.20.2','1.20.6','1.21.1','1.21.5','1.21.8','1.21.10','1.21.11')
 if ($Only) { $cells = $cells | Where-Object { $Only -contains $_ } }
 
 foreach ($v in $cells) {

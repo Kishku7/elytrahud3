@@ -95,6 +95,8 @@ def _client_era(ver):
         return "igui"
     if v < (1, 21):
         return "layered106"
+    if v >= (1, 21, 10):
+        return "addeb7bus"
     if v >= (1, 21, 6):
         return "addeb7"
     return "addclassic"
@@ -166,6 +168,17 @@ _JAVADOC = {
 }
 
 
+_IMPORTS["addeb7bus"] = _IMPORTS["addeb7"]
+
+_JAVADOC["addeb7bus"] = """/**
+ * Forge 1.21.10+ (60.x+) client bootstrap. Same EventBus-7 model as 1.21.8, but Forge 60
+ * deprecated-for-removal getBus(BusGroup) and exposes a static BUS per event, so the mod-bus
+ * AddGuiOverlayLayersEvent listener registers via AddGuiOverlayLayersEvent.BUS (game-bus tick via
+ * TickEvent.ClientTickEvent.Post.BUS as before). HUD = anchor-free LayeredDraw add; config via
+ * ConfigScreenHandler. 1.21.11 also carries the ResourceLocation->Identifier rename.
+ */"""
+
+
 def _init(era):
     if era == "igui":
         return """    public static void init(IEventBus modBus) {
@@ -179,6 +192,17 @@ def _init(era):
         return """    public static void init(FMLJavaModLoadingContext context) {
         // Injected context: BusGroup + extension point without the deprecated .get() statics.
         AddGuiOverlayLayersEvent.getBus(context.getModBusGroup()).addListener(ElytraHud3ForgeClient::addGuiLayers);
+        TickEvent.ClientTickEvent.Post.BUS.addListener(ElytraHud3ForgeClient::onClientTick);
+        context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+            () -> new ConfigScreenHandler.ConfigScreenFactory(
+                (mc, parent) -> new ElytraHudConfigScreen(parent)));
+    }"""
+    if era == "addeb7bus":
+        return """    public static void init(FMLJavaModLoadingContext context) {
+        // Forge 60+ (1.21.10+): getBus(BusGroup) is deprecated-for-removal; each event exposes
+        // a static BUS. Register the mod-bus overlay + game-bus tick on their BUS; the injected
+        // context still supplies the config-screen extension point.
+        AddGuiOverlayLayersEvent.BUS.addListener(ElytraHud3ForgeClient::addGuiLayers);
         TickEvent.ClientTickEvent.Post.BUS.addListener(ElytraHud3ForgeClient::onClientTick);
         context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
             () -> new ConfigScreenHandler.ConfigScreenFactory(
@@ -244,10 +268,16 @@ def _tick(era):
 
 def emit_client(cog, ver, codegen):
     era = _client_era(ver)
+    # The id-import must follow the mojmap ResourceLocation->Identifier rename (1.21.11+);
+    # every era except igui (string ids) references an id, so swap in the era-correct import.
+    imports = _IMPORTS[era]
+    if era != "igui":
+        imports = imports.replace(
+            "import net.minecraft.resources.ResourceLocation;", core.id_import(ver))
     parts = [
         "package dev.kishku.elytrahud3;",
         "",
-        _IMPORTS[era],
+        imports,
         "",
         _JAVADOC[era],
         _HEAD,
