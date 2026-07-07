@@ -62,5 +62,17 @@ foreach ($p in $pairs) {
     }
 }
 Remove-Item $tmp -Recurse -Force
-if ($fail -gt 0) { Write-Host "check-sync: $fail file(s) drifted"; exit 1 }
-Write-Host 'check-sync: all twins in sync'
+# --- D12 guard: manifest issue-tracker URL must be the canonical mod_support hub on every cell ---
+$CANON_ISSUES = 'https://github.com/Kishku7/mod_support/issues'
+$mans = Get-ChildItem $repoRoot -Recurse -File -Include 'fabric.mod.json','mods.toml','neoforge.mods.toml' |
+    Where-Object { $_.FullName -match '\\src\\main\\resources\\' -and $_.FullName -notmatch '\\build\\' }
+foreach ($mf in $mans) {
+    $txt = Get-Content $mf.FullName -Raw
+    if ($txt -match 'github\.com/Kishku7/[^"]*?/issues' -and $txt -notmatch [regex]::Escape($CANON_ISSUES)) {
+        Write-Host ("BAD-ISSUE-URL: " + $mf.FullName.Replace($repoRoot,'.') + " (must be $CANON_ISSUES)")
+        $fail++
+    }
+}
+
+if ($fail -gt 0) { Write-Host "check-sync: $fail file(s) drifted / bad manifest URL"; exit 1 }
+Write-Host 'check-sync: all twins in sync + manifest issue URLs canonical'

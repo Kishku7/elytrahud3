@@ -1,4 +1,5 @@
 license = "MIT"
+issueTrackerURL = "https://github.com/Kishku7/mod_support/issues"
 
 [[mods]]
     modId = "elytrahud3"
