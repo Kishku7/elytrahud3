@@ -3,6 +3,7 @@
 # This materializes each cog stub at 26.1 and compares CODE (comments/blank/package lines ignored)
 # against the plain twin; version-invariant plain cog_sources files are compared directly.
 # Exit 1 on drift. Run before every commit.
+param([switch]$Online)
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $cg = Join-Path $repoRoot '_codegen'
@@ -71,6 +72,38 @@ foreach ($mf in $mans) {
     if ($txt -match 'github\.com/Kishku7/[^"]*?/issues' -and $txt -notmatch [regex]::Escape($CANON_ISSUES)) {
         Write-Host ("BAD-ISSUE-URL: " + $mf.FullName.Replace($repoRoot,'.') + " (must be $CANON_ISSUES)")
         $fail++
+    }
+}
+
+
+# --- D13 guard (online): Modrinth project body must match the main README (single-source pitch) ---
+if ($Online) {
+    $PROJECT = 'plksOJtT'
+    $mainReadme = Join-Path (Split-Path $repoRoot -Parent) 'main\README.md'
+    if (-not (Test-Path $mainReadme)) {
+        Write-Host "D13 SKIP: main README not found at $mainReadme"
+    } else {
+        try {
+            $tok = $env:MODRINTH_PAT
+            if (-not $tok) {
+                $credFile = Join-Path $env:USERPROFILE 'OneDrive\Projects\Memory\credentials\modrinth-pat.md'
+                if (Test-Path $credFile) { $tok = [regex]::Match((Get-Content $credFile -Raw), 'mrp_[A-Za-z0-9]+').Value }
+            }
+            if (-not $tok) { throw 'no Modrinth token (set MODRINTH_PAT or the credentials file)' }
+            $hg = @{ Authorization = $tok; 'User-Agent' = 'Kishku7/elytrahud3-checksync' }
+            $proj = Invoke-RestMethod "https://api.modrinth.com/v2/project/$PROJECT" -Headers $hg -TimeoutSec 15
+            $bodyN = ((([string]$proj.body) -replace "`r`n","`n") -split "`n" | ForEach-Object { $_.TrimEnd() }) -join "`n"
+            $readN = (((Get-Content $mainReadme -Raw) -replace "`r`n","`n") -split "`n" | ForEach-Object { $_.TrimEnd() }) -join "`n"
+            $bodyN = $bodyN.TrimEnd(); $readN = $readN.TrimEnd()
+            if ($bodyN -eq $readN) {
+                Write-Host 'OK: Modrinth body matches main README (D13)'
+            } else {
+                Write-Host 'D13 DRIFT: Modrinth project body != main README (run: _publish_eh3_123.py --sync-desc)'
+                $fail++
+            }
+        } catch {
+            Write-Host "D13 SKIP: Modrinth check errored: $($_.Exception.Message)"
+        }
     }
 }
 
