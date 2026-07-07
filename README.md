@@ -6,7 +6,7 @@ ElytraHud3 is a **client-side** aviation-style flight HUD for elytra flight. Whi
 corner instrument cluster - airspeed, altitude, vertical speed, an artificial horizon, a compass, and
 elytra durability - so you can fly your elytra on instruments instead of by guesswork.
 
-Ships as a **Fabric and NeoForge mod** (with a Forge build on the older Minecraft versions). Client-side
+Ships for **Fabric, NeoForge, and Forge** across Minecraft 1.20 through 26.x (Forge through 1.21.11; on 26.x it's Fabric and NeoForge). Client-side
 only - safe to run without installing it on the server. Based on elytrahud-rework by inorganic / wancor1.
 Licensed MIT.
 
@@ -22,7 +22,7 @@ Licensed MIT.
 - **Your units, your layout.** Toggle imperial (default) or metric, and turn each gauge, its title, and
   its numeric readout on or off independently.
 - **Lightweight and client-side.** No blocks, no items, no commands, no server install - just a HUD.
-- **Everywhere you play.** Runs across Minecraft 1.20 through 26.x on Fabric, NeoForge, and Forge.
+- **Everywhere you play.** Runs across Minecraft 1.20 through 26.x on Fabric, NeoForge, and Forge (Forge through 1.21.11).
 
 ## Usage
 
