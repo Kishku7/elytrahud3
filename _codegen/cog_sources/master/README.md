@@ -1,4 +1,4 @@
-# shared_minecraft
+# _codegen/cog_sources/master
 
 MC-COUPLED shared client source. Compiles against each loader's mojmap-native Minecraft (26.x is
 unobfuscated, so one source serves both loaders). Pulled into each loader build via `srcDir`.

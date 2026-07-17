@@ -1,5 +1,5 @@
 # check-sync.ps1 -- drift tripwire between the cog sources and their PLAIN 26 twins.
-# The 26 cells never run cog, so shared_minecraft + Fabric/26 + NeoForge/26 keep plain masters.
+# The 26 cells never run cog, so _codegen/cog_sources/master + Fabric/26 + NeoForge/26 keep plain masters.
 # This materializes each cog stub at 26.1 and compares CODE (comments/blank/package lines ignored)
 # against the plain twin; version-invariant plain cog_sources files are compared directly.
 # Exit 1 on drift. Run before every commit.
@@ -23,7 +23,7 @@ function Normalize($path) {
     return $out
 }
 
-$sm = "$repoRoot\shared_minecraft\src\main\java\dev\kishku\elytrahud3"
+$sm = "$repoRoot\_codegen\cog_sources\master\src\main\java\dev\kishku\elytrahud3"
 $f26 = "$repoRoot\Fabric\26\src\main\java\dev\kishku\elytrahud3"
 $n26 = "$repoRoot\NeoForge\26\src\main\java\dev\kishku\elytrahud3"
 

@@ -1,7 +1,7 @@
 # ElytraHud3 -- NeoForge (26.x)
 
-NeoForge platform glue for the unified 26.x line. Shared code is pulled from `../shared_common` and
-`../shared_minecraft` via `srcDir`; this folder holds only NeoForge-specific files:
+NeoForge platform glue for the unified 26.x line. Shared code is pulled from `../_codegen/cog_sources/common` and
+`../_codegen/cog_sources/master` via `srcDir`; this folder holds only NeoForge-specific files:
 `Common` (holder), `ConfigManager` (FMLPaths config dir), `ElytraHud3NeoForge`,
 `ElytraHud3NeoForgeClient`, and the templated `neoforge.mods.toml`.
 

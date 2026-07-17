@@ -1,7 +1,7 @@
 # ElytraHud3 -- Fabric (26.x)
 
-Fabric platform glue for the unified 26.x line. Shared code is pulled from `../shared_common` and
-`../shared_minecraft` via `srcDir`; this folder holds only Fabric-specific files:
+Fabric platform glue for the unified 26.x line. Shared code is pulled from `../_codegen/cog_sources/common` and
+`../_codegen/cog_sources/master` via `srcDir`; this folder holds only Fabric-specific files:
 `Common` (ClientModInitializer), `ConfigManager` (FabricLoader config dir), `ElytraHudModMenu`,
 and the templated `fabric.mod.json`.
 

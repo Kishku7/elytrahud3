@@ -39,14 +39,14 @@ cell is built.
 
 | Dir | Contents |
 |-----|----------|
-| `shared_common/` | MC-agnostic shared code (`ElytraHudConfig`) + shared assets (lang, textures, icon). One source of truth. |
-| `shared_minecraft/` | MC-coupled shared client code (`HudData`, `HudRenderer`, `HudRenderHelper`, `ElytraHudConfigScreen`, `McCompat`) - newest-era master; older eras are derived. |
+| `_codegen/cog_sources/common/` | MC-agnostic shared code (`ElytraHudConfig`) + shared assets (lang, textures, icon). One source of truth. |
+| `_codegen/cog_sources/master/` | MC-coupled shared client code (`HudData`, `HudRenderer`, `HudRenderHelper`, `ElytraHudConfigScreen`, `McCompat`) - newest-era master; older eras are derived. |
 | `_codegen/` | Cog brains (`compat_core.py` + per-loader `compat_*.py`) + `cog_sources/`. Encodes every version/loader drift axis. |
 | `<Loader>/<mc-ver>/` | Thin per-version build cells (`Fabric/1.21.5`, `Forge/1.20.2`, `NeoForge/26`, ...). Each holds only its era's build wiring + manifest; its Java is cog-materialized into `gen/`. |
 | `scripts/` | `build-{fabric,forge,neoforge}.ps1` walkers, `cog-gen.ps1`, `check-sync.ps1`. |
 | `dist/` | Build output: `elytrahud3-<ver>+<mc>-<loader>.jar`. |
 
-Edit ONLY `_codegen/`, `shared_common/`, `shared_minecraft/`, and the 26-line twins - never a `gen/`
+Edit ONLY `_codegen/`, `_codegen/cog_sources/common/`, `_codegen/cog_sources/master/`, and the 26-line twins - never a `gen/`
 tree or a build output. `scripts/check-sync.ps1` guards the cog materialization against the twins.
 
 ## How to build
@@ -68,7 +68,7 @@ Forge = ForgeGradle 6.
 ## How the code generation works
 
 Cross-version API drift is resolved at build time by Cog, driven by `_codegen/`. The pre-26 build cells
-srcDir a cog-materialized `gen/` tree rather than `shared_minecraft` directly (which is why Cog must be
+srcDir a cog-materialized `gen/` tree rather than `_codegen/cog_sources/master` directly (which is why Cog must be
 installed before building). Reflection facades handle drift only where the runtime is mojmap (26.x, all
 loaders); everywhere the runtime is intermediary (pre-26 Fabric) or SRG (Forge/NeoForge 1.20.x) the same
 logic is emitted as DIRECT compiled access via Cog - the loader remaps mojmap names at load, but reflection

@@ -11,7 +11,7 @@ All notable changes to ElytraHud3 are documented here. The format follows
 - 26.3 Fabric cell retargeted `26.3-snapshot-3` -> `26.3-snapshot-4` (fabric-api 0.155.1+26.3,
   dep `26.3-alpha.4`, resource pack_format 92). Fabric-only (no NeoForge/Forge upstream on 26.3).
   Config screen + HUD compile clean against the snap-4 GLFW->SDL / renderpearl API changes.
-- Build refactor (no behaviour change): eliminated the `shared_minecraft/` and `shared_common/`
+- Build refactor (no behaviour change): eliminated the `_codegen/cog_sources/master/` and `_codegen/cog_sources/common/`
   source trees, folding them into the `_codegen/cog_sources` single source of truth (D16).
 
 ### Added

@@ -1,9 +1,9 @@
 # cog-gen.ps1 -- materialize a pre-26 build cell's gen/ tree from the one shared source.
 # Usage: pwsh -File scripts\cog-gen.ps1 -Cell Fabric/1.21.8
-# The 26 cells do NOT use cog-gen (they srcDir shared_minecraft directly; compat cannot affect 26).
-# gen/ is disposable build output (gitignored). Edit ONLY _codegen + shared_minecraft (+ 26 twins).
+# The 26 cells do NOT use cog-gen (they srcDir _codegen/cog_sources/master directly; compat cannot affect 26).
+# gen/ is disposable build output (gitignored). Edit ONLY _codegen + _codegen/cog_sources/master (+ 26 twins).
 # EH3 has NO mixins and NO generated per-version resources: gen/ = java + pack.mcmeta only
-# (assets/lang/icon are MC-agnostic and srcDir'd from shared_common by every cell).
+# (assets/lang/icon are MC-agnostic and srcDir'd from _codegen/cog_sources/common by every cell).
 param(
     [Parameter(Mandatory)][string]$Cell            # <Loader>/<mcver>, e.g. Fabric/1.21.8
 )
@@ -21,11 +21,11 @@ $pkg  = 'dev\kishku\elytrahud3'
 $genJ = Join-Path $gen ('src\main\java\' + $pkg)
 $genR = Join-Path $gen 'src\main\resources'
 
-# ---- 1. wipe gen/, copy shared_minecraft java verbatim (HudData + ElytraHudConfigScreen ride
+# ---- 1. wipe gen/, copy _codegen/cog_sources/master java verbatim (HudData + ElytraHudConfigScreen ride
 #         along unchanged; the drift files are overwritten by the cog stubs in step 2) ----
 Remove-Item $gen -Recurse -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $genJ, $genR | Out-Null
-Copy-Item (Join-Path $repoRoot ('shared_minecraft\src\main\java\' + $pkg + '\*')) $genJ -Recurse -Force
+Copy-Item (Join-Path $repoRoot ('_codegen\cog_sources\master\src\main\java\' + $pkg + '\*')) $genJ -Recurse -Force
 
 # ---- 2. overwrite drift files with the cog-instrumented shared stubs ----
 Copy-Item (Join-Path $cs 'shared\*') $genJ -Recurse -Force

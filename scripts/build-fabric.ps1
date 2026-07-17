@@ -11,7 +11,7 @@ Remove-Item $prog -ErrorAction SilentlyContinue
 
 # ---- pre-26 cells (cog-materialized) ----
 $cells = @('1.20','1.20.4','1.20.6','1.21.1','1.21.2','1.21.5','1.21.8','1.21.11')
-# ---- 26 line (matrix; cell Fabric/26 srcDirs shared_minecraft directly, no cog).
+# ---- 26 line (matrix; cell Fabric/26 srcDirs _codegen/cog_sources/master directly, no cog).
 #      pf = per-26.X resource pack_format (authoritative: Memory/knowledge/pack-formats.md) ----
 $matrix26 = [ordered]@{
     '26.1' = @{ mc='26.1.2';          api='0.152.1+26.1.2'; loader='0.18.6'; dep='>=26.1- <26.2'; pf='84' }

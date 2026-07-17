@@ -1,9 +1,9 @@
 """compat_core.py -- loader-agnostic, version-keyed drift brain for the SHARED Java files.
 
-DESIGN (EH3-specific, decided Stage 1 2026-07-03): the plain 26-era twins in shared_minecraft/
+DESIGN (EH3-specific, decided Stage 1 2026-07-03): the plain 26-era twins in _codegen/cog_sources/master/
 are the MASTERS. Pre-26 forms are DERIVED from the master text by exact-anchored line transforms
 (every transform asserts its anchor exists, so master drift breaks the build loudly instead of
-silently). The 26 cells srcDir shared_minecraft directly and never run cog; pre-26 cells build
+silently). The 26 cells srcDir _codegen/cog_sources/master directly and never run cog; pre-26 cells build
 from cog-materialized gen/ trees (scripts/cog-gen.ps1).
 
 Era axes (MC 1.20 - 1.21.11 pre-26 cells; javap-verified, see MATRIX.md "Era model"):
@@ -116,7 +116,7 @@ def id_import(ver):
 
 
 # ---------------------------------------------------------------------------
-# shared file: HudRenderer.java (master: shared_minecraft twin)
+# shared file: HudRenderer.java (master: _codegen/cog_sources/master twin)
 # ---------------------------------------------------------------------------
 
 _POSE3D_IMPORTS = "import com.mojang.blaze3d.vertex.PoseStack;\nimport com.mojang.math.Axis;\n"
@@ -194,7 +194,7 @@ def _apply_id(t, ver, loader):
 
 
 def emit_hud_renderer(cog, loader, ver, codegen):
-    t = read_twin(codegen, "shared_minecraft/src/main/java/dev/kishku/elytrahud3/HudRenderer.java")
+    t = read_twin(codegen, "_codegen/cog_sources/master/src/main/java/dev/kishku/elytrahud3/HudRenderer.java")
     t = _apply_gfx_text(t, ver)
     t = _apply_blit(t, ver)
     t = _apply_id(t, ver, loader)
@@ -211,7 +211,7 @@ def emit_hud_renderer(cog, loader, ver, codegen):
 
 
 def emit_hud_render_helper(cog, loader, ver, codegen):
-    t = read_twin(codegen, "shared_minecraft/src/main/java/dev/kishku/elytrahud3/HudRenderHelper.java")
+    t = read_twin(codegen, "_codegen/cog_sources/master/src/main/java/dev/kishku/elytrahud3/HudRenderHelper.java")
     t = _apply_gfx_text(t, ver)
     t = _apply_blit(t, ver)
     t = _apply_id(t, ver, loader)
@@ -259,6 +259,6 @@ final class McCompat {
 
 def emit_mc_compat(cog, loader, ver, codegen):
     if is26(ver):
-        emit(cog, read_twin(codegen, "shared_minecraft/src/main/java/dev/kishku/elytrahud3/McCompat.java"))
+        emit(cog, read_twin(codegen, "_codegen/cog_sources/master/src/main/java/dev/kishku/elytrahud3/McCompat.java"))
     else:
         emit(cog, _MCCOMPAT_DIRECT)

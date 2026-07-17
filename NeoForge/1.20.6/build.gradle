@@ -43,9 +43,9 @@ jar {
 }
 
 // Unified-source wiring (minecraft-1.20-26.3): compile the cog-materialized gen/ tree +
-// the MC-agnostic shared_common; the cell keeps only its manifest under src/main/resources.
-sourceSets.main.java.srcDirs = ['gen/src/main/java', '../../shared_common/src/main/java']
-sourceSets.main.resources.srcDirs = ['src/main/resources', 'gen/src/main/resources', '../../shared_common/src/main/resources']
+// the MC-agnostic cog_sources/common; the cell keeps only its manifest under src/main/resources.
+sourceSets.main.java.srcDirs = ['gen/src/main/java', '../../_codegen/cog_sources/common/src/main/java']
+sourceSets.main.resources.srcDirs = ['src/main/resources', 'gen/src/main/resources', '../../_codegen/cog_sources/common/src/main/resources']
 
 // gson (an MC library) references ErrorProne annotations that are not on the compile
 // classpath; -Xlint:all then warns while reading GsonBuilder.class. Making the annotations

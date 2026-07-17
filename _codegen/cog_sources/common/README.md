@@ -1,4 +1,4 @@
-# shared_common
+# _codegen/cog_sources/common
 
 MC-AGNOSTIC shared source + shared assets. Single source of truth -- pulled into each loader build via
 `srcDir`. EDIT HERE ONLY; never edit a build output.
