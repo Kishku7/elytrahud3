@@ -1,0 +1,9 @@
+{
+  "modrinth_id": "plksOJtT",
+  "slug": "elytrahud3",
+  "jar_prefix": "elytrahud3",
+  "fabric_api_dep": "P7dR8mSH",
+  "env": "client_only",
+  "quilt_via_fabric_pre26": true,
+  "forge_jar_also_neoforge_below_mc": "1.20.1"
+}
