@@ -7,9 +7,15 @@ All notable changes to ElytraHud3 are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.5] - 2026-07-21
+
 ### Changed
-- 26.3 Fabric cell retargeted `26.3-snapshot-3` -> `26.3-snapshot-4` (fabric-api 0.155.1+26.3,
-  dep `26.3-alpha.4`, resource pack_format 92). Fabric-only (no NeoForge/Forge upstream on 26.3).
+- 26.3 Fabric cell retargeted `26.3-snapshot-3` -> `26.3-snapshot-5` (fabric-api 0.155.3+26.3,
+  dep `26.3-alpha.5`, resource pack_format 93). HUD + config screen render clean in-world on the
+  snapshot (headless client-harness eyeballed: all flight instruments draw).
+- Sourced ModMenu from Modrinth's maven (`maven.modrinth:modmenu`) on the 26 cell instead of
+  `maven.terraformersmc.com`, which stopped serving the 18.x ModMenu artifacts the config-screen
+  entrypoint compiles against. Fabric-only (no NeoForge/Forge upstream on 26.3).
   Config screen + HUD compile clean against the snap-4 GLFW->SDL / renderpearl API changes.
 - Build refactor (no behaviour change): eliminated the `_codegen/cog_sources/master/` and `_codegen/cog_sources/common/`
   source trees, folding them into the `_codegen/cog_sources` single source of truth (D16).

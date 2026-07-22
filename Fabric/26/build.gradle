@@ -15,6 +15,17 @@ repositories {
     maven { url = "https://maven.terraformersmc.com/" }
     maven { url = "https://maven.fabricmc.net/" }
     maven { url = "https://maven.nucleoid.xyz" }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 // Shared single-source-of-truth trees pulled in from the sibling shared_* dirs.
@@ -29,7 +40,7 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // ModMenu is optional at runtime; needed only to compile the config-screen entrypoint.
-    api("com.terraformersmc:modmenu:${project.mod_menu_version}")
+    api("maven.modrinth:modmenu:${project.mod_menu_version}")
 
     // gson references ErrorProne annotations; resolvable compile-only keeps -Xlint:all silent.
     compileOnly "com.google.errorprone:error_prone_annotations:2.28.0"
