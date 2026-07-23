@@ -7,6 +7,21 @@ All notable changes to ElytraHud3 are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.6] - 2026-07-23
+
+### Fixed
+- **HUD no longer flashes on the creative/spectator fly toggle.** Double-tapping the jump key (the
+  vanilla creative/spectator "toggle fly" gesture) while an elytra is in the **vanilla chest slot**
+  made vanilla optimistically start an elytra glide for a moment -- it sets the fall-flying flag and
+  asks the server, which then rejects it -- and ElytraHud3 briefly drew the HUD before the server
+  correction cleared it. The visibility gate now also requires the player to NOT be in
+  creative/spectator flight (`!getAbilities().flying`); a real elytra glide never overlaps creative
+  fly, so the transient blip no longer draws while a true glide still shows normally. This only
+  occurred with the elytra in the vanilla chest slot -- it does NOT happen when the elytra is worn
+  via the **Elytra Trinket** mod's trinket slot (that leaves the chest slot empty, so vanilla never
+  attempts the glide-start). The fix uses vanilla APIs only and adds NO dependency on Elytra Trinket.
+
+
 ## [1.2.5] - 2026-07-21
 
 ### Changed

@@ -62,7 +62,7 @@ _RENDER_BODY = """                ElytraHudConfig config = Common.CONFIG;
                 if (player == null) {
                     return;
                 }
-                if (!config.alwaysDisplayHud && !player.isFallFlying()) {
+                if (!config.alwaysDisplayHud && !(player.isFallFlying() && !player.getAbilities().flying)) {
                     return;
                 }
                 Common.hudRenderer.render(graphics, partialTick);"""

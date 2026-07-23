@@ -44,7 +44,7 @@ public class Common implements ClientModInitializer {
                 if (player == null) {
                     return;
                 }
-                if (!CONFIG.alwaysDisplayHud && !player.isFallFlying()) {
+                if (!CONFIG.alwaysDisplayHud && !(player.isFallFlying() && !player.getAbilities().flying)) {
                     return;
                 }
                 hudRenderer.render(graphics, tickDelta);
