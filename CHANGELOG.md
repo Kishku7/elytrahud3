@@ -6,6 +6,21 @@ Versioning policy is universal across all mods and is NOT restated here -- see M
 
 ## [Unreleased]
 
+## [1.2.9] - 2026-07-28
+
+### Fixed
+- **The ModMenu pin was wrong on two of the three 26.x rows.** The Fabric 26 cell carried a
+  SINGLE `mod_menu_version=18.0.0` used for 26.1, 26.2 and 26.3 alike -- but ModMenu ships a
+  separate major per MC line (18.x = 26.1, 20.x = 26.2, 21.x = 26.3), and an older major is
+  INTERMEDIARY-named against a newer mojmap MC. So 26.2 and 26.3 were compiling against
+  26.1-era ModMenu and only got away with it because EH3 touches just the ModMenuApi surface.
+  `mod_menu_version` is now a PER-26.X matrix value in `scripts/build-fabric.ps1`
+  (**26.1 -> 18.0.0, 26.2 -> 20.0.1, 26.3 -> 21.0.0-alpha.1**), passed through as `-P`.
+  Same root cause as the ASR 26.1 build failure.
+
+### Changed
+- Version 1.2.8 -> **1.2.9**; Fabric 26.1 / 26.2 / 26.3 rebuilt against the correct ModMenu.
+
 ## [1.2.8] - 2026-07-28
 
 ### Changed

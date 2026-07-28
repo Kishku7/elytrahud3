@@ -12,11 +12,14 @@ Remove-Item $prog -ErrorAction SilentlyContinue
 # ---- pre-26 cells (cog-materialized) ----
 $cells = @('1.20','1.20.4','1.20.6','1.21.1','1.21.2','1.21.5','1.21.8','1.21.11')
 # ---- 26 line (matrix; cell Fabric/26 srcDirs _codegen/cog_sources/master directly, no cog).
-#      pf = per-26.X resource pack_format (authoritative: Memory/knowledge/pack-formats.md) ----
+#      pf = per-26.X resource pack_format (authoritative: Memory/knowledge/pack-formats.md).
+#      modmenu = per-26.X ModMenu line -- ModMenu ships a SEPARATE major per MC line and an older
+#      one is INTERMEDIARY-named against a newer mojmap MC, so a single pin across 26.1/26.2/26.3
+#      compiles against the wrong era (26.1 -> 18.0.0, 26.2 -> 20.0.1, 26.3 -> 21.0.0-alpha.1). ----
 $matrix26 = [ordered]@{
-    '26.1' = @{ mc='26.1.2';          api='0.152.1+26.1.2'; loader='0.18.6'; dep='>=26.1- <26.2'; pf='84' }
-    '26.2' = @{ mc='26.2';            api='0.152.1+26.2';   loader='0.19.3'; dep='>=26.2- <26.3'; pf='88' }
-  '26.3' = @{ mc='26.3-snapshot-6'; api='0.156.1+26.3';   loader='0.19.3'; dep='26.3-alpha.6'; pf='94' }
+    '26.1' = @{ mc='26.1.2';          api='0.152.1+26.1.2'; loader='0.18.6'; dep='>=26.1- <26.2'; pf='84'; modmenu='18.0.0' }
+    '26.2' = @{ mc='26.2';            api='0.152.1+26.2';   loader='0.19.3'; dep='>=26.2- <26.3'; pf='88'; modmenu='20.0.1' }
+  '26.3' = @{ mc='26.3-snapshot-6'; api='0.156.1+26.3';   loader='0.19.3'; dep='26.3-alpha.6'; pf='94'; modmenu='21.0.0-alpha.1' }
 }
 if ($Only) {
     $cells = $cells | Where-Object { $Only -contains $_ }
@@ -56,7 +59,7 @@ foreach ($v in $keys26) {
     Push-Location $cell26
     Get-ChildItem "$cell26\build\libs\*.jar" -ErrorAction SilentlyContinue | Remove-Item -Force
     & "$cell26\gradlew.bat" clean build "-Pminecraft_version=$($m.mc)" "-Pfabric_version=$($m.api)" `
-        "-Ploader_version=$($m.loader)" "-Pmc_dep=$($m.dep)" --console=plain *> "$cell26\_build_$v.log"
+        "-Ploader_version=$($m.loader)" "-Pmc_dep=$($m.dep)" "-Pmod_menu_version=$($m.modmenu)" --console=plain *> "$cell26\_build_$v.log"
     $code = $LASTEXITCODE
     Pop-Location
     Remove-Item Env:PACK_FORMAT -ErrorAction SilentlyContinue
