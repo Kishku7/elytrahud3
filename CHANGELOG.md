@@ -6,6 +6,20 @@ Versioning policy is universal across all mods and is NOT restated here -- see M
 
 ## [Unreleased]
 
+## [1.2.8] - 2026-07-28
+
+### Changed
+- **Fabric 26.3 cell moved to MC 26.3-snapshot-6** (from snapshot-5): fabric-api
+  `0.155.3+26.3` -> `0.156.1+26.3`, `pack_format` `93` -> `94`, exclusive pin
+  `26.3-alpha.5` -> `26.3-alpha.6`.
+
+### Notes
+- **No source change required.** The whole tree was scanned against every snapshot-6 breaking
+  surface (worldgen noise overhaul, Entity invulnerability split, `startSleeping` void ->
+  boolean, `SharedSuggestionProvider` filter parameter, `InputWithModifiers.getDigit()`
+  removal, options-screen reshuffle, terrain multidraw path, block-entity loot helpers) with
+  zero hits.
+
 ## [1.2.7] - 2026-07-27
 
 ### Changed
