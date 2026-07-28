@@ -1,11 +1,17 @@
 # Changelog
 
 All notable changes to ElytraHud3 are documented here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions are `<mod_version>+<mc-family>`;
-`mod_version` bumps only on a feature/behaviour change (a new MC-version port keeps the current
-`mod_version`).
+[Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Jars are named `<mod_version>+<mc-family>`.
+Versioning policy is universal across all mods and is NOT restated here -- see Memory/minecraft/mod-rules.md.
 
 ## [Unreleased]
+
+## [1.2.7] - 2026-07-27
+
+### Changed
+- NeoForge 26 cells rebuilt against the now-PUBLISHED NeoForge builds: 26.1 -> 26.1.2.87, 26.2 -> 26.2.0.35-beta (previously 26.1.2.30-beta / 26.2.0.1-beta). The [26.1.2.0-beta,) floor is unchanged.
+- mavenLocal() removed from the NeoForge/26 cell; the cell README example build command no longer pins the superseded loader build.
+- No source or behaviour change. Server-boot smoketested on NeoForge 26.1.2 and 26.2.
 
 ## [1.2.6] - 2026-07-23
 
