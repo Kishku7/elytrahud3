@@ -6,6 +6,38 @@ Versioning policy is universal across all mods and is NOT restated here -- see M
 
 ## [Unreleased]
 
+## [1.2.10] - 2026-07-31
+
+### Fixed
+- **Full D1-D22 doctrine re-audit found + fixed real live-boot and resource-pack bugs across
+  9 cells.** Rebuilt and republished the affected (loader, MC) pairs:
+  - **D3 claim-gate over-claims (4 cells), root-caused via built-jar manifest inspection:**
+    `Forge/1.21.1` claimed MC `[1.21,1.21.2)` needing javafml 52+, but MC 1.21.0 shipped Forge
+    51.0.33/javafml 51 -- narrowed to `[1.21.1,1.21.2)`. `Forge/1.21.8` claimed
+    `[1.21.6,1.21.9)` needing javafml 58+, but 1.21.6/1.21.7 are permanent orphan Forge builds
+    -- narrowed to `[1.21.8,1.21.9)`. `Forge/1.20.6` claimed `[1.20.5,1.21)` but Forge never
+    shipped MC 1.20.5 -- narrowed to `[1.20.6,1.21)`. `NeoForge/1.21.1` had the same shape
+    (`[1.21,1.21.2)` vs the neo 21.1 floor, MC 1.21.0 ships neo 21.0.x) -- narrowed to
+    `[1.21.1,1.21.2)`. Each of these previously refused to boot on part of its claimed range.
+  - **D3a NeoForge 26.1 over-blocking floor:** relaxed `[26.1.2.0-beta,)` -> `[26.1.0-alpha,)`
+    -- the mod's actual NeoForge glue uses no 26.1.2-specific API, so the tighter floor was
+    silently blocking 26.1 and 26.1.1 users for no reason.
+  - **D4 pack.mcmeta dead-zone (5 cells) -- the mod had never gotten the 2026-07-12 doctrine
+    correction every sibling mod already carries.** `Fabric/1.21.11`, `NeoForge/1.21.10`,
+    `NeoForge/1.21.11` were shipping the WRONG resource-major pack.mcmeta (should ship NONE --
+    both loaders synthesise correct metadata in the 1.21.9-1.21.11 dead zone);
+    `Forge/1.21.10`/`1.21.11` were shipping the wrong major too (corrected to the DATA-major
+    form, 88/94). A present-but-wrong pack.mcmeta drops the mod's WHOLE resource pack on
+    Forge/NeoForge -- HUD gauge textures and lang were gone for every live user on those
+    versions. Verified in every rebuilt jar (unzip-checked) and client-render smoketested.
+
+### Changed
+- Version 1.2.9 -> **1.2.10** on the 10 affected cells only (Forge 1.20.6/1.21.1/1.21.8/
+  1.21.10/1.21.11, NeoForge 1.21.1/1.21.10/1.21.11/26.1, Fabric 1.21.11); every other cell is
+  byte-unchanged and stays at its prior published version. All 10 rebuilt `-Xlint:all` zero
+  warnings; client-render smoketested on Raider (all 10 CELL PASS, HUD instruments verified by
+  eye in every screenshot).
+
 ## [1.2.9] - 2026-07-28
 
 ### Fixed
