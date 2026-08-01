@@ -12,7 +12,6 @@ Ships for **Fabric, NeoForge, and Forge** across Minecraft 1.20 through 26.x (Fo
 only - safe to run without installing it on the server. Based on elytrahud-rework by inorganic / wancor1.
 Licensed MIT.
 
-**Download:** https://modrinth.com/mod/elytrahud3
 **Source code:** [`minecraft-1.20-26.3` branch](https://github.com/Kishku7/elytrahud3/tree/minecraft-1.20-26.3)
 
 ## Why ElytraHud3
