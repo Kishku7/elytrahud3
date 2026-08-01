@@ -20,6 +20,6 @@ description='''Aviation-style flight HUD for Minecraft elytras. Do a Barrel Roll
 [[dependencies.elytrahud3]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20.5,1.21)"
+    versionRange="[1.20.6,1.21)"
     ordering="NONE"
     side="CLIENT"

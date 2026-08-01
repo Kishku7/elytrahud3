@@ -34,12 +34,20 @@ Copy-Item (Join-Path $cs 'shared\*') $genJ -Recurse -Force
 Copy-Item (Join-Path $cs ($Loader + '\*')) $genJ -Recurse -Force
 
 # ---- 4. pack.mcmeta (per-version resource pack_format; authoritative: Memory/knowledge/pack-formats.md.
-#         The 1.1.x jars shipped pf=8 everywhere -- that bug dies here.) ----
+#         The 1.1.x jars shipped pf=8 everywhere -- that bug dies here.)
+#         DEAD ZONE (major 65..81, MC 1.21.9/1.21.10/1.21.11 -- doctrine D4, corrected 2026-07-12):
+#         no single pack.mcmeta satisfies both the resource AND data codecs. Fabric + NeoForge
+#         synthesise correct per-type metadata when the file is ABSENT, so those loaders ship NONE.
+#         Classic Forge needs the file present (null metadata = fml.modloading.brokenresources ERROR,
+#         pack skipped) -- give it the exact-range form on the DATA major (88 for 1.21.9/1.21.10,
+#         94 for 1.21.11), the only value above both codec thresholds. Same fix already applied to
+#         bank-vault / lava-boats / ultimate-sleep / m1 / chunksmith (cog-gen.ps1 mirrors that pattern). ----
 $packFormats = @{
     '1.20'=15; '1.20.1'=15; '1.20.2'=18; '1.20.3'=22; '1.20.4'=22; '1.20.5'=32; '1.20.6'=32;
     '1.21'=34; '1.21.1'=34; '1.21.2'=42; '1.21.3'=42; '1.21.4'=46; '1.21.5'=55;
     '1.21.6'=63; '1.21.7'=64; '1.21.8'=64; '1.21.9'=69; '1.21.10'=69; '1.21.11'=75
 }
+$dataMajors = @{ '1.21.9'=88; '1.21.10'=88; '1.21.11'=94 }
 # The cell DIR is the coverage key; the jar is BUILT against the cell's minecraft_version
 # (e.g. Fabric/1.20.4 builds MC 1.20.1 and claims >=1.20.1 <1.21) -- pf follows the BUILD version.
 $mcBuild = $McVer
@@ -47,13 +55,15 @@ $gpLine = Select-String -Path (Join-Path $cell 'gradle.properties') -Pattern '^m
 if ($gpLine) { $mcBuild = $gpLine.Matches[0].Groups[1].Value.Trim() }
 $pf = $packFormats[$mcBuild]
 if (-not $pf) { throw "no pack_format for $mcBuild -- extend the table (knowledge/pack-formats.md)" }
-# pf > 64 (MC 1.21.9+): the pack codec makes min_format/max_format MANDATORY for packs
-# declaring support newer than 64 (runtime-verified: MC 1.21.10 rejects a plain-int
-# pf-75 mod pack with "missing mandatory fields min_format and max_format" -> the mod
-# resource pack is skipped). Emit the exact-single range form there, same shape as 26.x.
+Remove-Item (Join-Path $genR 'pack.mcmeta') -ErrorAction SilentlyContinue
 if ($pf -gt 64) {
-    ('{"pack":{"description":"elytrahud3 resources","pack_format":' + $pf + ',"min_format":' + $pf + ',"max_format":' + $pf + '}}') |
-        Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii
+    if ($Loader -eq 'forge') {
+        $dm = $dataMajors[$mcBuild]
+        if (-not $dm) { throw "no data-major for $mcBuild -- extend `$dataMajors" }
+        ('{"pack":{"description":"elytrahud3 resources","pack_format":' + $dm + ',"min_format":' + $dm + ',"max_format":' + $dm + '}}') |
+            Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii
+    }
+    # Fabric + NeoForge: no pack.mcmeta in the dead zone (already removed above).
 } else {
     ('{"pack":{"description":"elytrahud3 resources","pack_format":' + $pf + '}}') |
         Set-Content (Join-Path $genR 'pack.mcmeta') -Encoding ascii

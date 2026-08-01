@@ -79,7 +79,7 @@ twin on every pre-26 cell.
 
 | Loader | MC coverage | Notes |
 |--------|-------------|-------|
-| **Fabric** | 1.20 - 26.3-snapshot-2 (continuous) | intermediary runtime spans rename boundaries; one jar per render era |
+| **Fabric** | 1.20 - 26.3-snapshot-6 (continuous) | intermediary runtime spans rename boundaries; one jar per render era |
 | **NeoForge** | 1.20.1 - 26.2 (+ 1.21.10, 1.21.11) | <= 1.20.1 served by the Forge 1.20.1 fork jar (tagged forge+neoforge); dedicated 1.21.10 (pre-`Identifier`-rename) + 1.21.11 cells |
 | **Forge** | 1.20, 1.20.1, **1.20.2 - 1.20.4**, 1.20.6, 1.21.1, 1.21.5, 1.21.8, **1.21.10**, **1.21.11** | EH3 covers Forge through 1.21.11 (FG6 ceiling); no Forge on 26.x |
 
@@ -92,9 +92,12 @@ twin on every pre-26 cell.
 - NeoForge **1.21.9** - the 21.9.16-beta transitional build is not client-test-gateable; the Fabric
   `+1.21.11` jar still covers MC 1.21.9/1.21.10. No NeoForge build for 26.3 yet.
 
-Each jar declares an honest, closed MC + loader-floor range; 26.x jars ship the `min_format`/`max_format`
-range-form `pack.mcmeta`. Client-gated per (loader, version) on the Raider client-test harness (HUD
-rendered + screenshot-verified in-world).
+Each jar declares an honest, closed MC + loader-floor range (each cell's `minecraft`/`neoforge`/`forge`
+manifest floor is checked against the real per-version loader-build facts, not just internally
+self-consistent); 26.x jars ship the `min_format`/`max_format` range-form `pack.mcmeta`, and the
+1.21.9-1.21.11 dead zone ships no `pack.mcmeta` on Fabric/NeoForge and the data-major range form on Forge.
+Client-gated per (loader, version) on the Raider client-test harness (HUD rendered + screenshot-verified
+in-world).
 
 ## Credits / License
 
