@@ -6,6 +6,21 @@ Versioning policy is universal across all mods and is NOT restated here -- see M
 
 ## [Unreleased]
 
+## [1.2.11] - 2026-08-05
+
+### Changed
+- **Fabric 26.3 cell moved to MC 26.3-snapshot-7** (from snapshot-6): fabric-api
+  `0.156.1+26.3` -> `0.156.2+26.3`, resource `pack_format` `94` -> `95`, exclusive window
+  `[26.3-alpha.6, 26.3-alpha.7)` -> `[26.3-alpha.7, 26.3-alpha.8)`. Every 26.3 snapshot bumps
+  pack_format by one, so each jar stays snapshot-exclusive. No other cell changed.
+
+### Notes
+- **No source change required.** snapshot-7's breaking surfaces were checked against this mod and
+  none are touched: the trailing `Prediction` argument on `LivingEntity.drop(ItemStack, boolean)` /
+  `Inventory.placeItemBackInInventory`, the client-side `LocalPlayer.drop(boolean)` return type
+  going `boolean` -> `void`, the `InteractionResult.SwingSource` `CLIENT`/`SERVER` ->
+  `PREDICTED`/`SERVER_ONLY` rename together with the deletion of `ServerboundSwingPacket`, and the
+  32 new concrete slab/stair blocks plus the filled-map colour component removals.
 ## [1.2.10] - 2026-07-31
 
 ### Fixed

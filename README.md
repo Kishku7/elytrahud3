@@ -79,7 +79,7 @@ twin on every pre-26 cell.
 
 | Loader | MC coverage | Notes |
 |--------|-------------|-------|
-| **Fabric** | 1.20 - 26.3-snapshot-6 (continuous) | intermediary runtime spans rename boundaries; one jar per render era |
+| **Fabric** | 1.20 - 26.3-snapshot-7 (continuous) | intermediary runtime spans rename boundaries; one jar per render era |
 | **NeoForge** | 1.20.1 - 26.2 (+ 1.21.10, 1.21.11) | <= 1.20.1 served by the Forge 1.20.1 fork jar (tagged forge+neoforge); dedicated 1.21.10 (pre-`Identifier`-rename) + 1.21.11 cells |
 | **Forge** | 1.20, 1.20.1, **1.20.2 - 1.20.4**, 1.20.6, 1.21.1, 1.21.5, 1.21.8, **1.21.10**, **1.21.11** | EH3 covers Forge through 1.21.11 (FG6 ceiling); no Forge on 26.x |
 
