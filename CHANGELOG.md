@@ -6,6 +6,38 @@ Versioning policy is universal across all mods and is NOT restated here -- see M
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-09-18
+
+### Added
+- **NeoForge support on MC 26.3.** The 26 line previously stopped at NeoForge 26.2 because 26.3 was
+  believed to have no loader. It does -- `26.3.0.6-beta` -- and the thing that actually blocked it was
+  ModDevGradle: on 2.0.140 the NFRT `:createMinecraftArtifacts` recompile fails inside Minecraft's own
+  source (NeoForge's access transformer widens `HolderSet.Named.contents()` to public and the widening
+  is not propagated to the anonymous subclass `HolderSet.emptyNamed` returns), so javac rejects the
+  recompiled game before a single line of mod source is touched. MDG 2.0.147 builds the identical cell
+  clean. Nothing in this mod's code was involved.
+
+### Changed
+- **26.3 cell moved from MC 26.3-snapshot-7 to MC 26.3 (stable, 2026-09-15).** The snapshot-exclusive
+  single-build pin is gone: the jar now carries the ordinary closed prerelease-inclusive range
+  `>=26.3- <26.4` (Fabric) / `[26.3,26.4)` (NeoForge), the same shape every settled 26.X line uses.
+  Resource `pack_format` `95` -> `97`, read from 26.3's own `resources/version.json` -- the 26.3 ladder
+  ran 89,90,91,92,93,94,95 across the snapshots and then jumped TWO to 97 at pre-1, which is exactly
+  why it is read and never incremented.
+- fabric-api `0.156.2+26.3` -> `0.161.0+26.3`, fabric-loader `0.19.3` -> `0.19.5`,
+  ModMenu `21.0.0-alpha.1` -> `21.0.0-beta.1`, NeoForge `26.3.0.6-beta`, ModDevGradle `2.0.147`.
+
+### Notes
+- **No source change required.** ElytraHud3 is a client-only HUD mod with no mixins, and the 26.3
+  breaking surfaces were checked against it one by one: the only renderer symbol it names is
+  `RenderPipelines.GUI_TEXTURED`, handed straight to `GuiGraphics.blit` -- `RenderPipelines` itself did
+  NOT move in the snapshot-3 `com.mojang.blaze3d.*` -> `com.mojang.renderpearl.*` relocation, and the
+  mod never names the moved types, so the blit sites compile unchanged. It touches none of the
+  snapshot-4 SDL input renumbering, the snapshot-6 `InputWithModifiers.getDigit()` removal or options
+  screen reshuffle, the snapshot-7 `swing` / `drop` / `Prediction` breaks, the pre-1 worldgen and
+  `ChunkStatus` merge, or the rc-1 `LevelExtractor` rewrite.
+- Only the 26.3 cells were rebuilt; every other cell keeps the version it already shipped.
+
 ## [1.2.11] - 2026-08-05
 
 ### Changed

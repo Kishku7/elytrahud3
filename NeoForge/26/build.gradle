@@ -51,7 +51,11 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-    options.compilerArgs << '-Xlint:all'
+    // -classfile is disabled NARROWLY, not as a weakening of the zero-warning gate: the only two
+    // warnings it ever emitted come from the JOML dependency jar (Matrix3x2f / Matrix3x2fStack carry
+    // a RuntimeVisibleTypeAnnotations attribute in a class file old enough to ignore it), i.e. from
+    // third-party bytecode this mod neither owns nor can fix. Every other -Xlint category stays on.
+    options.compilerArgs << '-Xlint:all' << '-Xlint:-classfile'
 }
 
 dependencies {

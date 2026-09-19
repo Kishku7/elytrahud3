@@ -1,5 +1,5 @@
 # build-neoforge.ps1 -- ALL NeoForge builds: pre-26 cells (cog-gen -> gradle) AND the 26 line (matrix).
-# Usage: pwsh -File scripts\build-neoforge.ps1 [1.21.8 26.2 ...]   (no args = everything; no 26.3 -- loader gap)
+# Usage: pwsh -File scripts\build-neoforge.ps1 [1.21.8 26.2 26.3 ...]   (no args = everything)
 # NeoForge <=1.20.1 has NO cell: the Forge 1.20.1 jar serves it (fork point, tagged forge+neoforge).
 param([Parameter(ValueFromRemainingArguments)][string[]]$Only)
 $ErrorActionPreference = 'Stop'
@@ -16,6 +16,13 @@ $cells = @('1.20.4','1.20.6','1.21','1.21.1','1.21.2','1.21.5','1.21.8','1.21.10
 $matrix26 = [ordered]@{
     '26.1' = @{ mc='26.1.2'; neo='26.1.2.87'; neoRange='[26.1.0-alpha,)'; mcRange='[26.1,26.2)'; pf='84' }
     '26.2' = @{ mc='26.2';   neo='26.2.0.35-beta';  neoRange='[26.2.0-alpha,)';  mcRange='[26.2,26.3)'; pf='88' }
+    # 26.3 NeoForge EXISTS (26.3.0.x-beta). It needs ModDevGradle >= 2.0.147 -- on 2.0.140/2.0.141 the
+    # NFRT :createMinecraftArtifacts recompile dies inside Minecraft's OWN source (HolderSet.Named
+    # contents() access-widening not propagated to the anonymous subclass), BEFORE any mod source is
+    # compiled. That looks exactly like a broken loader but is purely a userdev/NFRT toolchain fault --
+    # a 26.3 dedicated server from the same installer boots fine. moddevgradle_version is bumped in
+    # NeoForge/26/gradle.properties.
+    '26.3' = @{ mc='26.3';   neo='26.3.0.6-beta';   neoRange='[26.3.0-alpha,)';  mcRange='[26.3,26.4)'; pf='97' }
 }
 if ($Only) {
     $cells = $cells | Where-Object { $Only -contains $_ }
