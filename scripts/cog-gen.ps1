@@ -33,7 +33,8 @@ Copy-Item (Join-Path $cs 'shared\*') $genJ -Recurse -Force
 # ---- 3. loader glue (cog stubs + version-invariant plain files) ----
 Copy-Item (Join-Path $cs ($Loader + '\*')) $genJ -Recurse -Force
 
-# ---- 4. pack.mcmeta (per-version resource pack_format; authoritative: Memory/knowledge/pack-formats.md.
+# ---- 4. pack.mcmeta (per-version resource pack_format, read from each MC version's own
+#         resources/version.json / SharedConstants.
 #         The 1.1.x jars shipped pf=8 everywhere -- that bug dies here.)
 #         DEAD ZONE (major 65..81, MC 1.21.9/1.21.10/1.21.11 -- doctrine D4, corrected 2026-07-12):
 #         no single pack.mcmeta satisfies both the resource AND data codecs. Fabric + NeoForge

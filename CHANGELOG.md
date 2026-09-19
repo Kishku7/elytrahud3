@@ -2,7 +2,7 @@
 
 All notable changes to ElytraHud3 are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Jars are named `<mod_version>+<mc-family>`.
-Versioning policy is universal across all mods and is NOT restated here -- see Memory/minecraft/mod-rules.md.
+Versioning policy is universal across all Kishku7 mods and is deliberately NOT restated here.
 
 ## [Unreleased]
 

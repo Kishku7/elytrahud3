@@ -86,10 +86,13 @@ if ($Online) {
         try {
             $tok = $env:MODRINTH_PAT
             if (-not $tok) {
-                $credFile = Join-Path $env:USERPROFILE 'OneDrive\Projects\Memory\credentials\modrinth-pat.md'
-                if (Test-Path $credFile) { $tok = [regex]::Match((Get-Content $credFile -Raw), 'mrp_[A-Za-z0-9]+').Value }
+                # The token file is located by MODRINTH_PAT_FILE, never by a path baked into this
+                # repo: this file is public, and naming where a maintainer keeps a PAT is a
+                # disclosure whether or not the file itself is reachable.
+                $credFile = $env:MODRINTH_PAT_FILE
+                if ($credFile -and (Test-Path $credFile)) { $tok = [regex]::Match((Get-Content $credFile -Raw), 'mrp_[A-Za-z0-9]+').Value }
             }
-            if (-not $tok) { throw 'no Modrinth token (set MODRINTH_PAT or the credentials file)' }
+            if (-not $tok) { throw 'no Modrinth token (set MODRINTH_PAT, or MODRINTH_PAT_FILE to a file containing one)' }
             $hg = @{ Authorization = $tok; 'User-Agent' = 'Kishku7/elytrahud3-checksync' }
             $proj = Invoke-RestMethod "https://api.modrinth.com/v2/project/$PROJECT" -Headers $hg -TimeoutSec 15
             $bodyN = ((([string]$proj.body) -replace "`r`n","`n") -split "`n" | ForEach-Object { $_.TrimEnd() }) -join "`n"

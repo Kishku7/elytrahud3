@@ -12,7 +12,9 @@ Remove-Item $prog -ErrorAction SilentlyContinue
 # ---- pre-26 cells (cog-materialized) ----
 $cells = @('1.20','1.20.4','1.20.6','1.21.1','1.21.2','1.21.5','1.21.8','1.21.11')
 # ---- 26 line (matrix; cell Fabric/26 srcDirs _codegen/cog_sources/master directly, no cog).
-#      pf = per-26.X resource pack_format (authoritative: Memory/knowledge/pack-formats.md).
+#      pf = per-26.X resource pack_format, READ from that MC build's own resources/version.json
+#      (RESOURCE_PACK_FORMAT_MAJOR in SharedConstants). Never extrapolated -- the 26.3 line moved it
+#      on nearly every build and then skipped a number entirely at pre-1.
 #      modmenu = per-26.X ModMenu line -- ModMenu ships a SEPARATE major per MC line and an older
 #      one is INTERMEDIARY-named against a newer mojmap MC, so a single pin across 26.1/26.2/26.3
 #      compiles against the wrong era (26.1 -> 18.0.0, 26.2 -> 20.0.1, 26.3 -> 21.0.0-alpha.1). ----
