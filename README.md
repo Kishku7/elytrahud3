@@ -101,4 +101,6 @@ in-world).
 
 ## Credits / License
 
-MIT. Based on elytrahud-rework by inorganic / wancor1 (MIT). ElytraHud3 maintained by Kishku7.
+MIT. Based on elytrahud-rework by inorganic / wancor1 (MIT), a fork of the original
+[Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud) by jewtvet (MIT) - the gauge textures
+are jewtvet's work, and that mod inspired this one. Thank you, jewtvet. ElytraHud3 maintained by Kishku7.
