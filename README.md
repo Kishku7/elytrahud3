@@ -9,7 +9,8 @@ elytra durability - so you can fly your elytra on instruments instead of by gues
 This is my effort to keep one of my favorite mods alive - updated for the 26.x series and the newest Minecraft versions as they release.
 
 Ships for **Fabric, NeoForge, and Forge** across Minecraft 1.20 through 26.x (Forge through 1.21.11; on 26.x it's Fabric and NeoForge). Client-side
-only - safe to run without installing it on the server. Based on elytrahud-rework by inorganic / wancor1.
+only - safe to run without installing it on the server. Based on elytrahud-rework by inorganic / wancor1,
+itself a fork of jewtvet's original [Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud).
 Licensed MIT.
 
 **Source code:** [`minecraft-1.20-26.3` branch](https://github.com/Kishku7/elytrahud3/tree/minecraft-1.20-26.3)
@@ -42,4 +43,8 @@ metric units.
 
 ## Credits and license
 
-MIT. Based on elytrahud-rework by inorganic / wancor1 (MIT); ElytraHud3 modifications (c) Kishku7. Flight-HUD design inspired by neo-elytra-hud (CC0) and by Microsoft Flight Simulator's instrument styling; roll compatibility via Do a Barrel Roll's public API.
+The gauge textures and the original HUD come from [Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud)
+by **jewtvet** (MIT). A big thank-you to jewtvet - that mod is the one I set out to keep alive, it inspired
+everything here, and the textures are their work. Much appreciated.
+
+MIT. Based on elytrahud-rework by inorganic / wancor1 (MIT), a fork of jewtvet's Elytra HUD (MIT); ElytraHud3 modifications (c) Kishku7. Flight-HUD design inspired by neo-elytra-hud (CC0) and by Microsoft Flight Simulator's instrument styling; roll compatibility via Do a Barrel Roll's public API.
