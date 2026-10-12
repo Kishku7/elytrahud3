@@ -6,11 +6,15 @@ Versioning policy is universal across all Kishku7 mods and is deliberately NOT r
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-12
+
 ### Fixed
 - **Artificial horizon: the whole ball now rolls with the aircraft.** Only the white aircraft symbol
   (-o-) used to rotate, while the blue/brown ball and the pitch ladder stayed fixed, so the horizon
   did not follow the world horizon when banking. The ball and pitch ladder are now rotated by the roll
   angle and the aircraft symbol is drawn fixed on top of them, like a real attitude indicator.
+  Thank you to DarthJahus, who reported this and contributed the fix (mod_support #47). Only visible
+  with Do a Barrel Roll, which supplies the roll.
 
 ## [1.3.0] - 2026-09-18
 
