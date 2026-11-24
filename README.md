@@ -1,106 +1,50 @@
-# ElytraHud3 - Build Guide (minecraft-1.20-26.3 branch)
+# ElytraHud3
 
-This branch is the unified ElytraHud3 source tree. ONE source tree builds every supported Minecraft
-version (1.20 through 26.3) on every applicable loader (Fabric, NeoForge, Forge). Per-version/loader API
-drift is absorbed at build time by codegen (Cog) + reflection facades, so there are no per-version source
-forks - only thin per-version build "cells" laid out `<Loader>/<mc-ver>/`. No Architectury, no Stonecutter.
+**Need help or found a bug?** Report it at the [support forum](https://github.com/Kishku7/mod_support/issues).
 
-For what ElytraHud3 is and how to use it, see the [landing page](https://github.com/Kishku7/elytrahud3).
-Questions or bug reports: https://github.com/Kishku7/mod_support/issues
+ElytraHud3 is a **client-side** aviation-style flight HUD for elytra flight. While you glide it draws a
+corner instrument cluster - airspeed, altitude, vertical speed, an artificial horizon, a compass, and
+elytra durability - so you can fly your elytra on instruments instead of by guesswork.
 
-## What you need installed
+This is my effort to keep one of my favorite mods alive - updated for the 26.x series and the newest Minecraft versions as they release.
 
-ElytraHud3 builds on Windows using PowerShell build scripts and per-cell Gradle wrappers.
+Ships for **Fabric, NeoForge, and Forge** across Minecraft 1.20 through 26.x (Forge through 1.21.11; on 26.x it's Fabric and NeoForge). Client-side
+only - safe to run without installing it on the server. Based on elytrahud-rework by inorganic / wancor1,
+itself a fork of jewtvet's original [Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud).
+Licensed MIT.
 
-**Required:**
+**Source code:** [`minecraft-1.20-26.3` branch](https://github.com/Kishku7/elytrahud3 (build guide: `BUILDING.md`))
 
-- **Windows + PowerShell 7 (`pwsh`)** - the build scripts are `.ps1` and call `gradlew.bat`.
-- **Python 3 with Cog (`cogapp`) on `PATH`:**
+## Why ElytraHud3
 
-      pip install cogapp
+- **Fly on instruments.** A full six-gauge cluster - airspeed, altitude, vertical speed, artificial
+  horizon, compass, and durability - appears the moment you start gliding and clears when you land.
+- **Roll-aware horizon.** The artificial horizon tilts with your view and is compatible with Do a Barrel
+  Roll, so aerobatics read correctly.
+- **Your units, your layout.** Toggle imperial (default) or metric, and turn each gauge, its title, and
+  its numeric readout on or off independently.
+- **Lightweight and client-side.** Pure Java, about 33 KB, with no Kotlin / FLK / YACL runtime dependencies - no blocks, no items, no commands, no server install, just a HUD.
+- **Everywhere you play.** Runs across Minecraft 1.20 through 26.x on Fabric, NeoForge, and Forge (Forge through 1.21.11).
 
-  Cog is the code generator that resolves cross-version API drift; the build scripts invoke it
-  automatically, so it must be installed before you build. The generator brains are in `_codegen/`
-  (`compat_core.py` + per-loader `compat_*.py`, pure Python, in-repo).
-- **JDKs, installed and discoverable by Gradle's toolchain detection** (no foojay auto-download is
-  configured, so install them yourself):
-    - JDK 17 (Temurin/Adoptium) - the 1.20.x Forge cells
-    - JDK 21 - the 1.21.x cells
-    - JDK 25 - the 26.x cells
+## Usage
 
-  Install all three to build the whole tree, or just the one(s) for the cells you care about.
+Install it on the **client** - it does nothing on a server and does not need to be installed there. Equip
+and deploy an elytra and start gliding; the instrument cluster appears in the corner while you are
+fall-flying and disappears when you land. ElytraHud3 adds no blocks, items, or commands - it is a HUD only.
 
-**Provided for you (do NOT install manually):** each cell ships a Gradle wrapper (`gradlew.bat`), and
-Gradle downloads the loader SDKs and dependencies on first build (Fabric Loom + Fabric API, NeoForge
-ModDevGradle / NeoGradle 7, Forge ForgeGradle 6). An internet connection is required the first time each
-cell is built.
+Open the config screen through **Mod Menu** (Fabric) or the loader's mod-config entry (NeoForge / Forge) to
+toggle individual gauges, their titles, and their numeric value boxes, and to switch between imperial and
+metric units.
 
-## Layout
+### Dependencies
 
-| Dir | Contents |
-|-----|----------|
-| `_codegen/cog_sources/common/` | MC-agnostic shared code (`ElytraHudConfig`) + shared assets (lang, textures, icon). One source of truth. |
-| `_codegen/cog_sources/master/` | MC-coupled shared client code (`HudData`, `HudRenderer`, `HudRenderHelper`, `ElytraHudConfigScreen`, `McCompat`) - newest-era master; older eras are derived. |
-| `_codegen/` | Cog brains (`compat_core.py` + per-loader `compat_*.py`) + `cog_sources/`. Encodes every version/loader drift axis. |
-| `<Loader>/<mc-ver>/` | Thin per-version build cells (`Fabric/1.21.5`, `Forge/1.20.2`, `NeoForge/26`, ...). Each holds only its era's build wiring + manifest; its Java is cog-materialized into `gen/`. |
-| `scripts/` | `build-{fabric,forge,neoforge}.ps1` walkers, `cog-gen.ps1`, `check-sync.ps1`. |
-| `dist/` | Build output: `elytrahud3-<ver>+<mc>-<loader>.jar`. |
+- **Fabric API** - required on Fabric builds.
+- **Mod Menu** and **Do a Barrel Roll** - optional (Do a Barrel Roll enables the roll-aware horizon).
 
-Edit ONLY `_codegen/`, `_codegen/cog_sources/common/`, `_codegen/cog_sources/master/`, and the 26-line twins - never a `gen/`
-tree or a build output. `scripts/check-sync.ps1` guards the cog materialization against the twins.
+## Credits and license
 
-## How to build
+The gauge textures and the original HUD come from [Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud)
+by **jewtvet** (MIT). A big thank-you to jewtvet - that mod is the one I set out to keep alive, it inspired
+everything here, and the textures are their work. Much appreciated.
 
-From the repo root, run the loader script for what you want. With no argument it builds every cell for
-that loader into `dist/`; pass one or more versions to build a subset.
-
-```
-pwsh scripts/build-fabric.ps1              # all Fabric cells + the 26 matrix
-pwsh scripts/build-neoforge.ps1            # all NeoForge cells + the 26 matrix
-pwsh scripts/build-forge.ps1               # all Forge cells (EH3 builds through 1.21.11; no 26 -- no Forge on 26.x)
-pwsh scripts/build-fabric.ps1 1.21.5 26.2  # a subset
-```
-
-Toolchains are pinned per cell (`org.gradle.java.home` + loader plugin): JDK 17 (1.20.x Forge), JDK 21
-(1.21.x), JDK 25 (26.x). Fabric = fabric-loom; NeoForge = ModDevGradle (>= 20.5) / NeoGradle 7 (1.20.4);
-Forge = ForgeGradle 6.
-
-## How the code generation works
-
-Cross-version API drift is resolved at build time by Cog, driven by `_codegen/`. The pre-26 build cells
-srcDir a cog-materialized `gen/` tree rather than `_codegen/cog_sources/master` directly (which is why Cog must be
-installed before building). Reflection facades handle drift only where the runtime is mojmap (26.x, all
-loaders); everywhere the runtime is intermediary (pre-26 Fabric) or SRG (Forge/NeoForge 1.20.x) the same
-logic is emitted as DIRECT compiled access via Cog - the loader remaps mojmap names at load, but reflection
-strings never get remapped. `McCompat` is the worked example: a reflection twin on 26 cells, a direct-call
-twin on every pre-26 cell.
-
-## Supported versions
-
-| Loader | MC coverage | Notes |
-|--------|-------------|-------|
-| **Fabric** | 1.20 - 26.3-snapshot-7 (continuous) | intermediary runtime spans rename boundaries; one jar per render era |
-| **NeoForge** | 1.20.1 - 26.2 (+ 1.21.10, 1.21.11) | <= 1.20.1 served by the Forge 1.20.1 fork jar (tagged forge+neoforge); dedicated 1.21.10 (pre-`Identifier`-rename) + 1.21.11 cells |
-| **Forge** | 1.20, 1.20.1, **1.20.2 - 1.20.4**, 1.20.6, 1.21.1, 1.21.5, 1.21.8, **1.21.10**, **1.21.11** | EH3 covers Forge through 1.21.11 (FG6 ceiling); no Forge on 26.x |
-
-**Known loader gaps (not bugs):**
-- Forge **1.21**, **1.21.3**, **1.21.4**, **1.21.6**, **1.21.7** - ORPHAN Forge builds (51/53/54/56/57):
-  the HUD/GUI-overlay registration API is absent (present at Forge 50/52/55/58 and 60/61, but not these orphans). A HUD mod has no
-  hook to attach there.
-- Forge **1.21.2** - MinecraftForge never shipped a 1.21.2 build.
-- Forge **1.21.10 / 1.21.11** - ARE built and shipped for ElytraHud3 (overlay API `AddGuiOverlayLayersEvent` / `ForgeLayeredDraw` present on forge 60/61, javap-verified). Forge **1.21.9** is beta-only (59.x) and skipped; the Fabric `+1.21.11` jar still covers MC 1.21.9.
-- NeoForge **1.21.9** - the 21.9.16-beta transitional build is not client-test-gateable; the Fabric
-  `+1.21.11` jar still covers MC 1.21.9/1.21.10. No NeoForge build for 26.3 yet.
-
-Each jar declares an honest, closed MC + loader-floor range (each cell's `minecraft`/`neoforge`/`forge`
-manifest floor is checked against the real per-version loader-build facts, not just internally
-self-consistent); 26.x jars ship the `min_format`/`max_format` range-form `pack.mcmeta`, and the
-1.21.9-1.21.11 dead zone ships no `pack.mcmeta` on Fabric/NeoForge and the data-major range form on Forge.
-Client-gated per (loader, version) on the Raider client-test harness (HUD rendered + screenshot-verified
-in-world).
-
-## Credits / License
-
-MIT. Based on elytrahud-rework by inorganic / wancor1 (MIT), a fork of the original
-[Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud) by jewtvet (MIT) - the gauge textures
-are jewtvet's work, and that mod inspired this one. Thank you, jewtvet. ElytraHud3 maintained by Kishku7.
+MIT. Based on elytrahud-rework by inorganic / wancor1 (MIT), a fork of jewtvet's Elytra HUD (MIT); ElytraHud3 modifications (c) Kishku7. Flight-HUD design inspired by neo-elytra-hud (CC0) and by Microsoft Flight Simulator's instrument styling; roll compatibility via Do a Barrel Roll's public API.
