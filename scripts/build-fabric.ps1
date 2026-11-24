@@ -22,6 +22,9 @@ $matrix26 = [ordered]@{
     '26.1' = @{ mc='26.1.2';          api='0.152.1+26.1.2'; loader='0.18.6'; dep='>=26.1- <26.2'; pf='84'; modmenu='18.0.0' }
     '26.2' = @{ mc='26.2';            api='0.152.1+26.2';   loader='0.19.3'; dep='>=26.2- <26.3'; pf='88'; modmenu='20.0.1' }
     '26.3' = @{ mc='26.3';            api='0.161.0+26.3';   loader='0.19.5'; dep='>=26.3- <26.4'; pf='97'; modmenu='21.0.0-beta.1' }
+    # 26.4 is still in pre-release: exclusive single-build pin (pack_format 104 read from 26.4-pre-1's own version.json).
+    # ModMenu has no 26.4 build yet; compile against the 26.3 one.
+    '26.4' = @{ mc='26.4-pre-1';      api='0.167.1+26.4';   loader='0.19.5'; dep='26.4-pre.1'; pf='104'; modmenu='21.0.0-beta.1' }
 }
 if ($Only) {
     $cells = $cells | Where-Object { $Only -contains $_ }

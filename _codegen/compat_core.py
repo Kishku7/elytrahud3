@@ -179,17 +179,22 @@ def _apply_gfx_text(t, ver):
 
 
 def _apply_blit(t, ver):
+    # The master calls McCompat.blit(graphics, ...): the pipeline holder class moved
+    # packages at 26.4, so the 26 form resolves it reflectively. Older eras swap the first argument.
     era = blit_era(ver)
+    if is26(ver):
+        return t
     if era == "pipeline":
+        t = sub(t, "McCompat.blit(graphics, ", "graphics.blit(RenderPipelines.GUI_TEXTURED, ")
+        # the master keeps no RenderPipelines import; the pre-26 pipeline era needs it back
+        t = sub(t, "import net.minecraft.client.gui.GuiGraphics;\n",
+                "import net.minecraft.client.gui.GuiGraphics;\nimport net.minecraft.client.renderer.RenderPipelines;\n", count=1)
         return t
     if era == "rendertype":
-        t = sub(t, "import net.minecraft.client.renderer.RenderPipelines;",
-                "import net.minecraft.client.renderer.RenderType;", count=1)
-        t = sub(t, "graphics.blit(RenderPipelines.GUI_TEXTURED, ",
-                "graphics.blit(RenderType::guiTextured, ")
+        t = sub(t, "McCompat.blit(graphics, ",
+                "graphics.blit(net.minecraft.client.renderer.RenderType::guiTextured, ")
     else:
-        t = sub(t, "import net.minecraft.client.renderer.RenderPipelines;\n", "", count=1)
-        t = sub(t, "graphics.blit(RenderPipelines.GUI_TEXTURED, ", "graphics.blit(")
+        t = sub(t, "McCompat.blit(graphics, ", "graphics.blit(")
     t = sub(t, ", 256, 256, -1);", ", 256, 256);")
     return t
 

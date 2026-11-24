@@ -80,6 +80,8 @@ def emit_common(cog, ver, codegen):
         if not core.is26(ver):
             # fabric-api pre-26 still names the tick event END_WORLD_TICK.
             t = core.sub(t, "END_LEVEL_TICK", "END_WORLD_TICK", count=2)
+            # pre-26 GUI graphics class name (the HUD proxy casts the first argument to it).
+            t = core.sub(t, "GuiGraphicsExtractor", "GuiGraphics")
         if not core.renamed_identifier(ver):
             # 1.21.6-1.21.8: same registry API, ResourceLocation id type (factory era).
             t = core.sub(t, "Identifier", "ResourceLocation")

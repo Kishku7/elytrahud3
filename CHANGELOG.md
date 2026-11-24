@@ -6,6 +6,12 @@ Versioning policy is universal across all Kishku7 mods and is deliberately NOT r
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-24 (Fabric 26.4 cell only)
+
+### Added
+- **Minecraft 26.4 (pre-release 1) support on Fabric.** New 26.4 cell, pinned to 26.4-pre-1 (pack_format 104). The jar
+  accepts 26.4-pre.1 only, like every pre-release build of a new line; the other lines are not rebuilt.
+
 ## [1.3.1] - 2026-10-12
 
 ### Fixed

@@ -3,7 +3,6 @@ package dev.kishku.elytrahud3;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
@@ -119,20 +118,20 @@ public class HudRenderer {
         int scaledHeight = client.getWindow().getGuiScaledHeight();
         int yPos = scaledHeight - (100 + defaultY);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 50, yPos, 0f, 0f, 100, 100, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 50, yPos, 0f, 0f, 100, 100, 256, 256, -1);
 
         HudRenderHelper.renderMeter(graphics, centerX, centerY, angleDegrees);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 5, centerY - 5, 215f, 73f, 10, 10, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 5, centerY - 5, 215f, 73f, 10, 10, 256, 256, -1);
 
         if (config.renderTitles) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 17, yPos - 10, 215f, 0f, 34, 9, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 17, yPos - 10, 215f, 0f, 34, 9, 256, 256, -1);
         }
 
         if (config.renderValues) {
             int valueX = centerX - 10;
             int valueY = yPos + 101;
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
             graphics.text(client.font, String.format("%3d", valueInt), valueX + 2, valueY + 2, -1);
         }
     }
@@ -142,20 +141,20 @@ public class HudRenderer {
         int scaledHeight = client.getWindow().getGuiScaledHeight();
         int yPos = scaledHeight - (50 + defaultY);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 25, yPos, 100f, 50f, 50, 50, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 25, yPos, 100f, 50f, 50, 50, 256, 256, -1);
 
         HudRenderHelper.renderVerticalMeter(graphics, centerX, centerY, angleDegrees);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 3, centerY - 3, 215f, 99f, 6, 6, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 3, centerY - 3, 215f, 99f, 6, 6, 256, 256, -1);
 
         if (config.renderTitles) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 14, yPos - 10, 215f, 27f, 28, 9, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 14, yPos - 10, 215f, 27f, 28, 9, 256, 256, -1);
         }
 
         if (config.renderValues) {
             int valueX = centerX - 10;
             int valueY = yPos + 51;
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
             graphics.text(client.font, String.format("%3d", valueInt), valueX + 2, valueY + 2, -1);
         }
     }
@@ -177,7 +176,7 @@ public class HudRenderer {
         graphics.pose().translate((float) -centerX, (float) -centerY);
 
         // Blue/brown ball background
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 25, yPos, 100f, 100f, 50, 50, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 25, yPos, 100f, 100f, 50, 50, 256, 256, -1);
 
         // Pitch ladder lines (must rotate with the ball)
         int[][] horizonList = {
@@ -188,12 +187,12 @@ public class HudRenderer {
 
         int horizonX = 0;
         for (int[] row : horizonList) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 22 + horizonX, yPos + 3 - 3 + row[2], 170f + horizonX, (float) (horizonY + row[2]), row[0], row[1], 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 22 + horizonX, yPos + 3 - 3 + row[2], 170f + horizonX, (float) (horizonY + row[2]), row[0], row[1], 256, 256, -1);
             horizonX += row[0];
         }
         for (int i = horizonList.length - 1; i >= 0; i--) {
             int[] row = horizonList[i];
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 22 + horizonX, yPos + 3 - 3 + row[2], 170f + horizonX, (float) (horizonY + row[2]), row[0], row[1], 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 22 + horizonX, yPos + 3 - 3 + row[2], 170f + horizonX, (float) (horizonY + row[2]), row[0], row[1], 256, 256, -1);
             horizonX += row[0];
         }
 
@@ -203,29 +202,29 @@ public class HudRenderer {
         HudRenderHelper.renderHorizon(graphics, centerX, centerY, 0.0f);
 
         if (config.renderTitles) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 15, yPos - 10, 215f, 179f, 29, 9, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 15, yPos - 10, 215f, 179f, 29, 9, 256, 256, -1);
         }
 
         if (config.renderValues) {
             int valueX = centerX - 10;
             int valueY = yPos + 51;
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
             graphics.text(client.font, String.format("%3d", valueInt), valueX + 2, valueY + 2, -1);
         }
     }
 
     private void renderBar(GuiGraphicsExtractor graphics, int x, int yPos, int yCoordinate, int valueInt, ElytraHudConfig config) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x, yPos, 150f, 0f, 15, 50, 256, 256, -1);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 4, yCoordinate, 215f, 56f, 4, 3, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, x, yPos, 150f, 0f, 15, 50, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, x + 4, yCoordinate, 215f, 56f, 4, 3, 256, 256, -1);
 
         if (config.renderTitles) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x, yPos - 10, 215f, 18f, 15, 9, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, x, yPos - 10, 215f, 18f, 15, 9, 256, 256, -1);
         }
 
         if (config.renderValues) {
             int valueX = x - 3;
             int valueY = yPos + 51;
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
             graphics.text(client.font, String.format("%3d", valueInt), valueX + 2, valueY + 2, -1);
         }
     }
@@ -235,21 +234,21 @@ public class HudRenderer {
         int scaledHeight = client.getWindow().getGuiScaledHeight();
         int yPos = scaledHeight - (100 + defaultY);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 50, yPos, 0f, 100f, 100, 100, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 50, yPos, 0f, 100f, 100, 100, 256, 256, -1);
 
         HudRenderHelper.renderDoubleMeterNeedle1(graphics, centerX, centerY, angle1);
         HudRenderHelper.renderDoubleMeterNeedle2(graphics, centerX, centerY, angle2);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 5, centerY - 5, 215f, 83f, 10, 10, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 5, centerY - 5, 215f, 83f, 10, 10, 256, 256, -1);
 
         if (config.renderTitles) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 16, yPos - 10, 215f, 36f, 32, 9, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 16, yPos - 10, 215f, 36f, 32, 9, 256, 256, -1);
         }
 
         if (config.renderValues) {
             int valueX = centerX - 10;
             int valueY = yPos + 101;
-            graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
+            McCompat.blit(graphics, WIDGETS_TEXTURE, valueX, valueY, 215f, 165f, 21, 11, 256, 256, -1);
             graphics.text(client.font, String.format("%3d", valueInt), valueX + 2, valueY + 2, -1);
         }
     }
@@ -261,11 +260,11 @@ public class HudRenderer {
         matrices.translate((float) centerX, (float) centerY);
         matrices.rotate(angleRadians);
         matrices.translate((float) -centerX, (float) -centerY);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 50, centerY - 50, 100f, 150f, 100, 100, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 50, centerY - 50, 100f, 150f, 100, 100, 256, 256, -1);
         matrices.popMatrix();
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 5, centerY - 47, 215f, 59f, 6, 5, 256, 256, -1);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 5, centerY - 6, 215f, 64f, 10, 9, 256, 256, -1);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, centerX - 15, centerY - 58, 215f, 45f, 26, 11, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 5, centerY - 47, 215f, 59f, 6, 5, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 5, centerY - 6, 215f, 64f, 10, 9, 256, 256, -1);
+        McCompat.blit(graphics, WIDGETS_TEXTURE, centerX - 15, centerY - 58, 215f, 45f, 26, 11, 256, 256, -1);
     }
 }
