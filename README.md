@@ -13,7 +13,7 @@ only - safe to run without installing it on the server. Based on elytrahud-rewor
 itself a fork of jewtvet's original [Elytra HUD (from MFS 2020)](https://modrinth.com/mod/elytra-hud).
 Licensed MIT.
 
-**Source code:** [`minecraft-1.20-26.3` branch](https://github.com/Kishku7/elytrahud3 (build guide: `BUILDING.md`))
+**Source code:** [Kishku7/elytrahud3](https://github.com/Kishku7/elytrahud3) (build guide: `BUILDING.md`)
 
 ## Why ElytraHud3
 
